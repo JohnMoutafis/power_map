@@ -68,11 +68,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'euro_energy_flow.wsgi.application'
 
-
 # Database
 DATABASES = {'default': config('DATABASE_URL', cast=dburl)}
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -107,6 +105,9 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ],
 }
+
+ENTSOE_BASE_URL = config('ENTSOE_BASE_URL', default='https://transparency.entsoe.eu/api')
+ENTSOE_SECURITY_TOKEN = config('ENTSOE_SECURITY_TOKEN')
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
