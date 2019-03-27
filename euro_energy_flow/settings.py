@@ -108,6 +108,7 @@ REST_FRAMEWORK = {
 
 ENTSOE_BASE_URL = config('ENTSOE_BASE_URL', default='https://transparency.entsoe.eu/api')
 ENTSOE_SECURITY_TOKEN = config('ENTSOE_SECURITY_TOKEN')
+ENTSOE_DATETIME_FORMAT = '%Y%m%d%H00'
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

@@ -1,6 +1,11 @@
 from bs4 import BeautifulSoup
 
 
+def entsoe_error_parser(content):
+    soup = BeautifulSoup(content.decode('utf-8'), features='xml')
+    return soup.find('Reason').find('text').get_text()
+
+
 def entsoe_content_parser(content):
         soup = BeautifulSoup(content.decode('utf-8'), features='xml')
 
