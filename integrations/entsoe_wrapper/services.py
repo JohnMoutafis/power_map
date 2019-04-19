@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import requests
 
-from euro_energy_flow import settings
+from power_map import settings
 from integrations.entsoe_wrapper import errors
 from integrations.entsoe_wrapper.http_action_wrappers import perform_fetch_request
 from integrations.entsoe_wrapper.parsers import entsoe_error_parser
