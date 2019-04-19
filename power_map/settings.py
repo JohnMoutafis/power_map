@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # modules
     'modules.countries.apps.CountriesConfig',
+    'modules.country_capacity.apps.CountryCapacityConfig',
 ]
 
 MIDDLEWARE = [
