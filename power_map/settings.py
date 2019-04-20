@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # modules
     'modules.countries.apps.CountriesConfig',
     'modules.country_capacity.apps.CountryCapacityConfig',
+    'modules.country_generation.apps.CountryGenerationConfig',
 ]
 
 MIDDLEWARE = [
