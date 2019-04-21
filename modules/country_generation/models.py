@@ -44,7 +44,7 @@ class GenerationPerType(BaseModel):
 
 class CountryGeneration(BaseModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    hourly_generation = models.ManyToManyField(GenerationPerType, blank=True, null=True)
+    hourly_generation = models.ManyToManyField(GenerationPerType, blank=True)
 
     class Meta:
         verbose_name = 'Country Generation'

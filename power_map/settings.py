@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'modules.countries.apps.CountriesConfig',
     'modules.country_capacity.apps.CountryCapacityConfig',
     'modules.country_generation.apps.CountryGenerationConfig',
+    'modules.country_forecast.apps.CountryForecastConfig',
 ]
 
 MIDDLEWARE = [
