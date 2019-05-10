@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db import models
 
-from base.models import BaseModel
+from base.models import BaseModel, BaseDataModel
 from modules.countries.models import Country
 
 
@@ -35,14 +35,8 @@ class GenerationPerType(BaseModel):
         verbose_name_plural = 'Actual Generation Per Type'
         ordering = ['hour_frame']
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if len(self.hour_frame) == 0:
-            now = datetime.now()
-            self.hour_frame = '{}:00 - {}:00'.format(now.hour, now.hour + 1)
-        super().save(force_insert, force_update, using, update_fields)
 
-
-class CountryGeneration(BaseModel):
+class CountryGeneration(BaseDataModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     hourly_generation = models.ManyToManyField(GenerationPerType, blank=True)
 

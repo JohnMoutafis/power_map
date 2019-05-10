@@ -11,3 +11,10 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class BaseDataModel(BaseModel):
+    reference_date = models.DateField(blank=True, null=True)
+
+    class Meta:
+        abstract = True

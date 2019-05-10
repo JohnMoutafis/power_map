@@ -1,6 +1,6 @@
 from django.db import models
 
-from base.models import BaseModel
+from base.models import BaseModel, BaseDataModel
 from modules.countries.models import Country
 
 
@@ -26,7 +26,7 @@ class WindSolarGenerationForecast(BaseModel):
         ordering = ['hour_frame']
 
 
-class CountryForecast(BaseModel):
+class CountryForecast(BaseDataModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     forecast = models.ManyToManyField(GenerationForecast, blank=True)
     wind_solar_forecast = models.ManyToManyField(WindSolarGenerationForecast, blank=True)
