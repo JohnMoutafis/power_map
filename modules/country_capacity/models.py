@@ -1,10 +1,10 @@
 from django.db import models
 
-from base.models import BaseModel
+from base.models import BaseDataModel
 from modules.countries.models import Country
 
 
-class CountryCapacity(BaseModel):
+class CountryCapacity(BaseDataModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     # Types
     biomass = models.IntegerField(default=0, null=True, blank=True)

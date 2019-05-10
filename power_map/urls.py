@@ -14,10 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.routers import SimpleRouter
+from rest_framework_swagger.views import get_swagger_view
+
+from modules.countries.api.views import CountryViewSet
+from modules.country_capacity.api.views import CountryCapacityViewSet
+
+schema_view = get_swagger_view(title='Power Map API')
+
+router = SimpleRouter()
+router.register('countries', CountryViewSet, base_name='countries')
+router.register('country_capacities', CountryCapacityViewSet, base_name='country-capacity')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('api/v1/api-auth/', include('rest_framework.urls')),
+    path('api/v1/api-token-auth/', obtain_auth_token),
+    path('api/v1/docs/', schema_view),
+    path('api/v1/', include(router.urls)),
 ]

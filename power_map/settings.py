@@ -35,7 +35,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd party apps
+    'django_celery_beat',
+    'django_filters',
     'rest_framework',
+    'rest_framework_swagger',
     # modules
     'modules.countries.apps.CountriesConfig',
     'modules.country_capacity.apps.CountryCapacityConfig',
@@ -98,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Rest Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -111,6 +115,12 @@ REST_FRAMEWORK = {
     ],
 }
 
+# Celery Settings
+REDIS_URL = config('REDIS_URL', default='redis://localhost:6379')
+CELERY_BROKER_URL = f'{REDIS_URL}/0'
+CELERY_RESULT_BACKEND = f'{REDIS_URL}/1'
+
+# ENTSOE endpoint settings
 ENTSOE_BASE_URL = config('ENTSOE_BASE_URL', default='https://transparency.entsoe.eu/api')
 ENTSOE_SECURITY_TOKEN = config('ENTSOE_SECURITY_TOKEN')
 ENTSOE_DATETIME_FORMAT = '%Y%m%d%H00'
