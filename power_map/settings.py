@@ -120,11 +120,6 @@ REDIS_URL = config('REDIS_URL', default='redis://localhost:6379')
 CELERY_BROKER_URL = f'{REDIS_URL}/0'
 CELERY_RESULT_BACKEND = f'{REDIS_URL}/1'
 
-# ENTSOE endpoint settings
-ENTSOE_BASE_URL = config('ENTSOE_BASE_URL', default='https://transparency.entsoe.eu/api')
-ENTSOE_SECURITY_TOKEN = config('ENTSOE_SECURITY_TOKEN')
-ENTSOE_DATETIME_FORMAT = '%Y%m%d%H00'
-
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -177,4 +172,74 @@ LOGGING = {
             'propagate': False,
         }
     }
+}
+
+# ENTSOE endpoint settings
+ENTSOE_BASE_URL = config('ENTSOE_BASE_URL', default='https://transparency.entsoe.eu/api')
+ENTSOE_SECURITY_TOKEN = config('ENTSOE_SECURITY_TOKEN')
+ENTSOE_DATETIME_FORMAT = '%Y%m%d%H00'
+ENTSOE_COUNTRY_ZONES = {
+    'Albania': '10YAL-KESH-----5',
+    'Austria': '10YAT-APG------L',
+    'Belarus': '10Y1001A1001A51S',
+    'Belgium': '10YBE----------2',
+    'Bosnia and Herzegovina': '10YBA-JPCC-----D',
+    'Bulgaria': '10YCA-BULGARIA-R',
+    'Croatia': '10YHR-HEP------M',
+    'Cyprus': '10YCY-1001A0003J',
+    'Czech Republic': '10YCZ-CEPS-----N',
+    'Denmark': '10Y1001A1001A65H',
+    'Estonia': '10Y1001A1001A39I',
+    'The former Yugoslav Republic of Macedonia	MKD	MK': '10YMK-MEPSO----8',
+    'Finland': '10YFI-1--------U',
+    'France': '10YFR-RTE------C',
+    'Germany': '10Y1001A1001A83F',
+    'Greece': '10YGR-HTSO-----Y',
+    'Hungary': '10YHU-MAVIR----U',
+    'Iceland': 'IS',  # Info missing here from REST endpoint docs.
+    'Ireland': '10YIE-1001A00010',
+    'Italy': '10YIT-GRTN-----B',
+    'Latvia': '10YLV-1001A00074',
+    'Lithuania': '10YLT-1001A0008Q',
+    'Luxembourg': '10YLU-CEGEDEL-NQ',
+    'Malta': '10Y1001A1001A93C',
+    'Moldova': '10Y1001A1001A990',
+    'Montenegro': '10YCS-CG-TSO---S',
+    'Netherlands': '10YNL----------L',
+    'Norway': '10YNO-0--------C',
+    'Poland': '10YPL-AREA-----S',
+    'Portugal': '10YPT-REN------W',
+    'Romania': '10YRO-TEL------P',
+    'Russia': '10Y1001A1001A49F',
+    'Serbia': '10YCS-SERBIATSOV',
+    'Slovakia': '10YSK-SEPS-----K',
+    'Slovenia': '10YSI-ELES-----O',
+    'Spain': '10YES-REE------0',
+    'Sweden': '10YSE-1--------K',
+    'Switzerland': '10YCH-SWISSGRIDZ',
+    'Turkey': '10YTR-TEIAS----W',
+    'Ukraine': '10Y1001C--00003F',
+    'United Kingdom': '10YGB----------A'
+}
+ENTSOE_PRODUCTION_TYPE_MAPPING = {
+    'B01': 'biomass',
+    'B02': 'fossil_lignite',
+    'B03': 'fossil_coal_derived_gas',
+    'B04': 'fossil_gas',
+    'B05': 'fossil_hard_coal',
+    'B06': 'fossil_oil',
+    'B07': 'fossil_oil_shale',
+    'B08': 'fossil_peat',
+    'B09': 'geothermal',
+    'B10': 'hydro_pumped_storage',
+    'B11': 'hydro_river_and_poundage',
+    'B12': 'hydro_water_reservoir',
+    'B13': 'marine',
+    'B14': 'nuclear',
+    'B15': 'other_renewable',
+    'B16': 'solar',
+    'B17': 'waste',
+    'B18': 'wind_offshore',
+    'B19': 'wind_onshore',
+    'B20': 'other'
 }

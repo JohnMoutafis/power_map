@@ -1,11 +1,12 @@
 from django.db import models
 
-from base.models import BaseDataModel
+from base.models import BaseModel
 from modules.countries.models import Country
 
 
-class CountryCapacity(BaseDataModel):
+class CountryCapacity(BaseModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    reference_year = models.CharField(max_length=4, default='', blank=True)
     # Types
     biomass = models.IntegerField(default=0, null=True, blank=True)
     fossil_coal_derived_gas = models.IntegerField(default=0, null=True, blank=True)
@@ -34,3 +35,8 @@ class CountryCapacity(BaseDataModel):
         verbose_name = 'Country Capacity'
         verbose_name_plural = 'Countries Capacity'
         ordering = ['country']
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.reference_year == '':
+            self.reference_year = self.last_updated.year
+        return super().save(force_insert, force_update, using, update_fields)

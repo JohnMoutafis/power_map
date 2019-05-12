@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 import requests
 
 from power_map import settings
@@ -8,20 +6,22 @@ from integrations.entsoe_wrapper.http_action_wrappers import perform_fetch_reque
 from integrations.entsoe_wrapper.parsers import entsoe_error_parser
 
 
-START_DT = (datetime.now() - timedelta(hours=5))
-END_DT = datetime.now()
+def fetch_entsoe_data(params):
+    """
+    Fetches data from ENTSOE for a document specified in the parameters.
 
+    Args:
+        params: Request parameters as dictionary.
 
-def fetch_entsoe_data(document_type, process_type='', start_dt=START_DT, end_dt=END_DT):
-    params = {
-        'securityToken': settings.ENTSOE_SECURITY_TOKEN,
-        'documentType': document_type,
-        'processType':  process_type,
-        'outBiddingZone_Domain': '10YCZ-CEPS-----N',
-        # 'in_Domain': '10YCZ-CEPS-----N',
-        'periodStart': start_dt.strftime(settings.ENTSOE_DATETIME_FORMAT),
-        'periodEnd': end_dt.strftime(settings.ENTSOE_DATETIME_FORMAT)
-    }
+    Raises:
+        errors.BadRequest
+        errors.Unauthorized
+        errors.NotFound
+        errors.Unavailable
+
+    Returns:
+        Response content in xml format.
+    """
     try:
         response = perform_fetch_request(url=settings.ENTSOE_BASE_URL, params=params)
     except requests.exceptions.HTTPError as exc:
