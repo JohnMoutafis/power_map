@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'django_filters',
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_swagger',
     # modules
     'modules.countries.apps.CountriesConfig',

@@ -9,7 +9,7 @@ from modules.country_capacity.tasks import update_country_capacity
 
 
 class CountryCapacityViewSet(viewsets.ModelViewSet):
-    """A simple ViewSet for viewing Country information"""
+    """A simple ViewSet for viewing CountryCapacity Info."""
     queryset = CountryCapacity.objects.all()
     serializer_class = CountryCapacitySerializer
 
