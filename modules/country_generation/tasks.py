@@ -16,7 +16,16 @@ logger = logging.getLogger('power_map')
 
 @shared_task
 def update_country_generation(in_date: date, country: str = None):
+    """
+    Updates a Country's hourly generation for a given date.
 
+    Args:
+        in_date: A date type object.
+        country: A country identifier (name, iso2, iso3)
+
+    Returns:
+        A CountryGeneration instance.
+    """
     params = {
         'securityToken': settings.ENTSOE_SECURITY_TOKEN,
         'documentType': 'A75',
@@ -66,8 +75,15 @@ def update_country_generation(in_date: date, country: str = None):
         generation_per_type_list.append(GenerationPerType(hour_frame=hour_frame, **types))
         frame_start = frame_end
         frame_end += 1
+        frame_end = 0 if frame_end == 24 else frame_end
 
     country_generation.hourly_generation.add(*GenerationPerType.objects.bulk_create(generation_per_type_list))
 
     return country_generation
 
+
+@shared_task
+def update_countries_hourly_generation():
+    """Mass Update of every Country's Hourly Generation"""
+    for country_iso in Country.objects.all().values_list('iso3', flat=True):
+        update_country_generation(date.today(), country_iso)

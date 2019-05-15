@@ -6,7 +6,8 @@ from modules.countries.models import Country
 
 class GenerationForecast(BaseModel):
     hour_frame = models.CharField(max_length=14, default='', blank=True)
-    forecast = models.IntegerField(default=0, null=True, blank=True)
+    generation_forecast = models.IntegerField(default=0, null=True, blank=True)
+    consumption_forecast = models.IntegerField(default=0, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Generation Forecast'

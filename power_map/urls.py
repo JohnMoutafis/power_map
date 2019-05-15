@@ -21,6 +21,7 @@ from rest_framework_swagger.views import get_swagger_view
 
 from modules.countries.api.views import CountryViewSet
 from modules.country_capacity.api.views import CountryCapacityViewSet
+from modules.country_forecast.api.views import CountryForecastViewSet
 from modules.country_generation.api.views import CountryGenerationViewSet
 
 schema_view = get_swagger_view(title='Power Map API')
@@ -29,6 +30,7 @@ router = SimpleRouter()
 router.register('countries', CountryViewSet, base_name='countries')
 router.register('country_capacities', CountryCapacityViewSet, base_name='country-capacity')
 router.register('country-generation', CountryGenerationViewSet, base_name='country-generation')
+router.register('country-forecast', CountryForecastViewSet, base_name='country-forecast')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
