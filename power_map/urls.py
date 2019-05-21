@@ -38,4 +38,5 @@ urlpatterns = [
     path('api/v1/api-token-auth/', obtain_auth_token),
     path('api/v1/docs/', schema_view),
     path('api/v1/', include(router.urls)),
+    path('', include('modules.dashboard.urls')),
 ]

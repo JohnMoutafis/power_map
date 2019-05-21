@@ -88,6 +88,17 @@ def entsoe_generation_per_type_parser(content):
 
 
 def entsoe_generation_forecast_parser(content):
+    """
+    Parses ENTSOE Country Generation Forecast Data Response (document 71).
+
+    Args:
+        content: ENTSOE response xml content.
+
+    Returns:
+        A dictionary with {
+            generation_forecast: {hour_frame: forecast}, consumption_forecast: {hour_frame: forecast}
+        } format.
+    """
     hour_frame_template = '{}:00 - {}:00'
     frame_start, frame_end = 0, 1
     response = {'generation_forecast': {}, 'consumption_forecast': {}}
@@ -146,6 +157,19 @@ def entsoe_generation_forecast_parser(content):
 
 
 def entsoe_wind_solar_forecast_parser(content):
+    """
+    Parses ENTSOE Country Wind/Solar Generation Forecast Data Response (document 69).
+
+    Args:
+        content: ENTSOE response xml content.
+
+    Returns:
+        A dictionary with {
+            solar_forecast: {hour_frame: forecast},
+            wind_offshore_forecast: {hour_frame: forecast},
+            wind_onshore_forecast: {hour_frame: forecast}
+        } format.
+    """
     hour_frame_template = '{}:00 - {}:00'
     frame_start, frame_end = 0, 1
     response = {'solar_forecast': {}, 'wind_offshore_forecast': {}, 'wind_onshore_forecast': {}}

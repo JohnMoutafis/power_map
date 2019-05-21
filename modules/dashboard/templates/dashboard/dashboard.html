@@ -1,0 +1,15 @@
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Power Map</title>
+</head>
+<body>
+  <div id="react-app"></div>
+</body>
+{% block javascript %}
+  {% render_bundle 'main' %}
+{% endblock javascript %}
+</html>

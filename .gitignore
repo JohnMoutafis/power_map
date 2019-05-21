@@ -1,10 +1,5 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
-*$py.class
-
-# C extensions
-*.so
 
 # Distribution / packaging
 .Python
@@ -56,11 +51,6 @@ coverage.xml
 local_settings.py
 db.sqlite3
 
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
 
 # PyBuilder
 target/
@@ -71,12 +61,14 @@ target/
 # celery beat schedule file
 celerybeat-schedule
 
-# SageMath parsed files
-*.sage.py
-
 # Environments
 .env
 .env.*
+
+# npm modules
+node_modules
+webpack-stats.json
+webpack-stats-prod.json
 
 # Other
 .idea
