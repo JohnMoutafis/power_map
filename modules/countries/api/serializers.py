@@ -1,10 +1,10 @@
-from rest_framework import serializers
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from modules.countries.models import Country
 
 
-class CountrySerializer(serializers.ModelSerializer):
+class CountrySerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Country
-        fields = ('id', 'name', 'iso2', 'iso3', 'border')
-        read_only_field = ('id',)
+        geo_field = 'border'
+        fields = ('name', 'iso2', 'iso3')

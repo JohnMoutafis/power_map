@@ -21,7 +21,7 @@ module.exports = merge(base, {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://0.0.0.0:3000',
     'webpack/hot/only-dev-server',
-    path.resolve('./modules/dashboard/static/js/index.jsx')
+    path.resolve('./modules/dashboard/static/js/index.js')
   ],
   output: {
     path: path.resolve('./staticfiles/assets/bundles'),

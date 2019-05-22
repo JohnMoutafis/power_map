@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.dev.config.js --progress --colors",
     "build-production": "webpack --config webpack.prod.config.js --optimize --progress --colors",
-    "start": "webpack-dev-server --config webpack.dev.config.js"
+    "watch": "webpack-dev-server --config webpack.dev.config.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,11 @@
     "@babel/preset-react": "^7.0.0",
     "babel": "^6.23.0",
     "babel-loader": "^8.0.6",
+    "leaflet": "^1.5.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.8.7",
+    "react-leaflet": "^2.3.0",
     "webpack": "^4.32.0",
     "webpack-bundle-tracker": "^0.4.2-beta",
     "webpack-cli": "^3.3.2",

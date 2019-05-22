@@ -6,7 +6,7 @@ const BundleTracker = require('webpack-bundle-tracker');
 module.exports = merge(base, {
   mode: 'production',
   entry: {
-    main: path.resolve('./modules/dashboard/static/js/index.jsx')
+    main: path.resolve('./modules/dashboard/static/js/index.js')
   },
   output: {
     path: path.resolve('./staticfiles/assets/dist/'),
