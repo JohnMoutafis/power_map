@@ -9,6 +9,7 @@ logger = logging.getLogger('django')
 def perform_fetch_request(url, params=None, headers=None):
     """
     Performs a GET request to the provided endpoint.
+
     Args:
         url:     Endpoint's url.
         params:  Request parameters.
@@ -35,6 +36,7 @@ def perform_fetch_request(url, params=None, headers=None):
 def perform_post_request(url, payload=None, headers=None):
     """
     Performs a POST request to the provided endpoint.
+
     Args:
         url:     Endpoint's url.
         payload: Request payload.

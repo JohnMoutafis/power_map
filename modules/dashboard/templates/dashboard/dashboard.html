@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Power Map</title>
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
+  <style>
+    .leaflet-container {
+      height: 98vh;
+      width: 98vw;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="react-app"></div>
+</body>
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+{% render_bundle 'main' %}
+</html>

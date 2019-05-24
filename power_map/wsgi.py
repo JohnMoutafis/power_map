@@ -1,5 +1,5 @@
 """
-WSGI config for euro_energy_flow project.
+WSGI config for power_map project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'euro_energy_flow.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'power_map.settings')
 
 application = get_wsgi_application()
