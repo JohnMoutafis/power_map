@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import CentralMap from './components/CentralMap';
+import Dashboard from './containers/Dashboard'
 
 export default class App extends Component{
   render(){
-    return (<CentralMap />);
+    return <Dashboard />;
   }
 }
