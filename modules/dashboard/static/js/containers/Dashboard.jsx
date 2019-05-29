@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CentralMap from '../components/CentralMap';
-import Filters from '../components/Filters';
+import Filters from './Filters';
 import '../../css/dashboard.css';
 
 
