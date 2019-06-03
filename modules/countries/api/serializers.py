@@ -11,6 +11,13 @@ class CountrySerializer(GeoFeatureModelSerializer):
         fields = ('name', 'iso2', 'iso3')
 
 
+class SimpleCountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ('name', 'iso2')
+        read_only_fields = fields
+
+
 class CountryNameIsoSerializer(serializers.ModelSerializer):
     label = serializers.SerializerMethodField('to_label')
     value = serializers.SerializerMethodField('to_value')

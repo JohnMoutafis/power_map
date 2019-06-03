@@ -3,11 +3,14 @@ from datetime import datetime
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from modules.countries.api.serializers import SimpleCountrySerializer
 from modules.country_capacity.models import CountryCapacity
 
 
 class CountryCapacitySerializer(serializers.ModelSerializer):
     """Standard CountryCapacity Model Serializer."""
+    country = SimpleCountrySerializer()
+
     class Meta:
         model = CountryCapacity
         fields = (
