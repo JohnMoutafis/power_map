@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+const returnDateFormat = 'YYYY-MM-DD';
+
 
 export default class DateRangePicker extends Component{
   constructor(props) {
@@ -14,18 +18,18 @@ export default class DateRangePicker extends Component{
   }
 
   handleFromChange(from) {
-    this.props.handleDatePickerFromChange(from);
+    this.props.handleDatePickerFromChange(moment(from).format(returnDateFormat));
     this.setState({from: from});
   }
 
   handleToChange(to) {
-    this.props.handleDatePickerToChange(to);
+    this.props.handleDatePickerToChange(moment(to).format(returnDateFormat));
     this.setState({to: to});
   }
 
   render() {
     const {from, to} = this.state;
-    const format = 'yyyy-MM-dd';
+    const format = 'MMMM d, yyyy';
 
     return(
       <div>

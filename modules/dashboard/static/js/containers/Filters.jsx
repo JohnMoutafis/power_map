@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import EndpointFilters from '../components/EndpointFilter';
-import CountryFilters from '../components/CountryFilters';
-import DateRangePicker from "../components/DatePickerFilters";
+import EndpointFilters from '../components/Filters/EndpointFilter';
+import CountryFilters from '../components/Filters/CountryFilters';
+import DateRangePicker from '../components/Filters/DatePickerFilters';
+import TimeRangePicker from '../components/Filters/TimePickerFilters';
 
 
 const endpointOptions = [
@@ -19,13 +20,17 @@ export default class Filters extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDatePickerFromChange = this.handleDatePickerFromChange.bind(this);
     this.handleDatePickerToChange = this.handleDatePickerToChange.bind(this);
+    this.handleTimePickerStartChange = this.handleTimePickerStartChange.bind(this);
+    this.handleTimePickerEndChange = this.handleTimePickerEndChange.bind(this);
     this.state = {
       hasData: false,
       countryOptions: [],
       selectedEndpoints: endpointOptions[0],
       selectedCountries: [],
       dateFrom: undefined,
-      dateTo: undefined
+      dateTo: undefined,
+      timeStart: undefined,
+      timeEnd: undefined
     };
   }
 
@@ -51,6 +56,14 @@ export default class Filters extends Component{
 
   handleDatePickerToChange(to) {
     this.setState({dateTo: to});
+  }
+
+  handleTimePickerStartChange(start) {
+    this.setState({timeStart: start});
+  }
+
+  handleTimePickerEndChange(end) {
+    this.setState({timeEnd: end});
   }
 
   handleSubmit(event) {
@@ -94,6 +107,14 @@ export default class Filters extends Component{
             <DateRangePicker
               handleDatePickerFromChange={this.handleDatePickerFromChange}
               handleDatePickerToChange={this.handleDatePickerToChange}
+            />
+          </label>
+          <br/>
+          <label>
+            Time Range:
+            <TimeRangePicker
+              handleTimePickerStartChange={this.handleTimePickerStartChange}
+              handleTimePickerEndChange={this.handleTimePickerEndChange}
             />
           </label>
           <br/>

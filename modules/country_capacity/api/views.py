@@ -8,7 +8,7 @@ from rest_framework.response import Response
 import django_filters
 from rest_framework_gis.filters import GeometryFilter
 
-from common.filters import ListFilter
+from common.filters import CharListFilter
 from common.helpers import create_year_range
 from modules.country_capacity.api.serializers import CountryCapacitySerializer, UpdateCapacitySerializer
 from modules.country_capacity.models import CountryCapacity
@@ -17,9 +17,12 @@ from modules.country_capacity.tasks import update_country_capacity
 
 class CountryCapacityFilterSet(django_filters.FilterSet):
     country_contains_geom = GeometryFilter(field_name='country__border', lookup_expr='contains')
-    country_in = ListFilter(field_name='country__iso2')
+    country_iso2 = CharListFilter(field_name='country__iso2', lookup_expr='in')
     reference_year_exact = django_filters.CharFilter(field_name='reference_year', lookup_expr='exact')
-    reference_year = django_filters.DateFromToRangeFilter(method='reference_year_range_filter')
+    reference_year = django_filters.DateFromToRangeFilter(
+        help_text='Must be set with `_before` and/or `_after` keywords.',
+        method='reference_year_range_filter'
+    )
 
     def reference_year_range_filter(self, queryset, name, value):
         if not value.start and not value.stop:
