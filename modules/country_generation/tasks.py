@@ -1,8 +1,9 @@
 import logging
 from datetime import date, datetime, timedelta
 
-from celery import shared_task
 from django.db.models import Q
+
+from celery import shared_task
 
 from integrations.entsoe_wrapper.errors import BadRequest, NotFound, Unauthorized, Unavailable
 from integrations.entsoe_wrapper.parsers import entsoe_generation_per_type_parser
@@ -60,25 +61,23 @@ def update_country_generation(in_date: date, country: str = None):
 
     if created:
         last_covered = 0
-        hour_frame_template = '{}:00 - {}:00'
-        frame_start, frame_end = 0, 1
+        hour_frame_template = '{}:00'
+        current_hour = 0
     else:
         last_covered = country_generation.hourly_generation.all().count()
-        hour_frame_template = '{}:00 - {}:00'
-        frame_start, frame_end = last_covered, last_covered + 1
+        hour_frame_template = '{}:00'
+        current_hour = last_covered
 
     for n in range(last_covered, hours_covered):
         types = {}
-        hour_frame = hour_frame_template.format(str(frame_start).zfill(2), str(frame_end).zfill(2))
+        hour_frame = hour_frame_template.format(str(current_hour).zfill(2))
         for key in generation_data_keys:
             types.update({key: generation_data[key].get(hour_frame, 0)})
         generation_per_type_list.append(GenerationPerType(hour_frame=hour_frame, **types))
-        frame_start = frame_end
-        frame_end += 1
-        frame_end = 0 if frame_end == 24 else frame_end
+        current_hour += 1
+        current_hour = 0 if current_hour == 24 else current_hour
 
     country_generation.hourly_generation.add(*GenerationPerType.objects.bulk_create(generation_per_type_list))
-
     return country_generation
 
 
