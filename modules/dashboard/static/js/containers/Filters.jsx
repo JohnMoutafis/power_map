@@ -25,7 +25,7 @@ export default class Filters extends Component{
     this.state = {
       hasData: false,
       countryOptions: [],
-      selectedEndpoints: endpointOptions[0],
+      selectedEndpoints: [endpointOptions[0]],
       selectedCountries: [],
       dateFrom: undefined,
       dateTo: undefined,
@@ -67,7 +67,20 @@ export default class Filters extends Component{
   }
 
   handleSubmit(event) {
-    console.log(this.state);
+    if (!this.state.selectedEndpoints || !this.state.selectedEndpoints.length){
+      console.log('Empty');
+    } else if (!this.state.selectedCountries || !this.state.selectedCountries.length) {
+       console.log('Empty');
+    } else {
+      this.props.handleSubmit(
+        this.state.selectedEndpoints,
+        this.state.selectedCountries,
+        this.state.dateFrom,
+        this.state.dateTo,
+        this.state.timeStart,
+        this.state.timeEnd
+      );
+    }
     event.preventDefault();
   }
 
@@ -84,7 +97,7 @@ export default class Filters extends Component{
         <h3>Available Filters</h3>
         <form onSubmit={this.handleSubmit}>
           <label>
-            Available Info:
+            Available Info
             <EndpointFilters
               endpointOptions={endpointOptions}
               selectedEndpoints={selectedEndpoints}
@@ -94,7 +107,7 @@ export default class Filters extends Component{
           </label>
           <br/>
           <label>
-            Available Countries:
+            Available Countries
             <CountryFilters
               countryOptions={this.state.countryOptions}
               selectedCountries={selectedCountries}
@@ -103,7 +116,7 @@ export default class Filters extends Component{
           </label>
           <br/>
           <label>
-            Date Range:
+            Date Range
             <DateRangePicker
               handleDatePickerFromChange={this.handleDatePickerFromChange}
               handleDatePickerToChange={this.handleDatePickerToChange}
@@ -111,7 +124,7 @@ export default class Filters extends Component{
           </label>
           <br/>
           <label>
-            Time Range:
+            Time Range
             <TimeRangePicker
               handleTimePickerStartChange={this.handleTimePickerStartChange}
               handleTimePickerEndChange={this.handleTimePickerEndChange}

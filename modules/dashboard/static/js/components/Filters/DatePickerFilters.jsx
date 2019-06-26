@@ -48,7 +48,6 @@ export default class DateRangePicker extends Component{
           showMonthDropdown
           dropdownMode='select'
         />
-        {' '}-{' '}
         <DatePicker
           placeholderText='To'
           dateFormat={format}

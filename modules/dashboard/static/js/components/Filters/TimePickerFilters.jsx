@@ -42,7 +42,6 @@ export default class TimeRangePicker extends Component{
           isClearable={true}
           shouldCloseOnSelect={false}
         />
-        {' '}-{' '}
         <DatePicker
           placeholderText='Time End'
           selected={this.state.end}
