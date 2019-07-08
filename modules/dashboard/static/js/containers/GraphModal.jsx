@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
+import Graph from '../components/Graph';
 import '../../css/graph-modal.css';
 
 
@@ -39,8 +40,9 @@ export default class GraphModal extends Component {
           ariaHideApp={false}
           contentLabel='Query Graph Representation'
         >
-          {/*<p>{this.props.displayData}</p>*/}
-          <h1>HEY</h1>
+          <div className='graphContainer'>
+            <Graph graphData={this.props.displayData}/>
+          </div>
           <button onClick={this.closeModal}>Close</button>
         </Modal>
       </div>

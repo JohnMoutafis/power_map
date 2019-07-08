@@ -17,6 +17,7 @@ export default class Dashboard extends Component{
   }
 
   fetchFromEndpoint(endpoint) {
+    console.log(endpoint);
     fetch(endpoint).then(
       results => {return results.json();}
     ).then(
@@ -26,13 +27,29 @@ export default class Dashboard extends Component{
 
   handleSubmit(endpoints, countries, dateFrom, dateTo, timeStart, timeEnd) {
     for (let endpoint of endpoints){
-      let params = {};
-      if(endpoint.label === 'capacity') {
-        // params = {country_iso2: countries, reference_year_before: dateTo.year, reference_year_after: dateFrom.year}
-      } else {
-        params = {country_iso2: countries,}
+      let final_endpoint = endpoint.value;
+
+      let country_iso2 = 'country_iso2=';
+      for(const country of countries) {
+        country_iso2 += (country.value + ',')
       }
-      this.fetchFromEndpoint(endpoint.value);
+      final_endpoint += '?' + country_iso2.slice(0, -1);
+
+      if(dateTo != null) {
+        if(endpoint.label === 'capacity') {
+          final_endpoint += '&reference_year_before=' + dateTo;
+        } else {
+          final_endpoint += '&reference_date_before=' + dateTo
+        }
+      }
+      if(dateFrom != null){
+        if(endpoint.label === 'capacity') {
+          final_endpoint += '&reference_year_after=' + dateFrom;
+        } else {
+          final_endpoint += '&reference_year_after=' + dateFrom;
+        }
+      }
+      this.fetchFromEndpoint(final_endpoint);
     }
     event.preventDefault();
   }
