@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import Graph from '../components/Graph';
+import CapacityGraph from '../components/Graphs/CapacityGraph';
 import '../../css/graph-modal.css';
 
 
@@ -41,7 +41,7 @@ export default class GraphModal extends Component {
           contentLabel='Query Graph Representation'
         >
           <div className='graphContainer'>
-            <Graph graphData={this.props.displayData}/>
+            <CapacityGraph graphData={this.props.displayData}/>
           </div>
           <button onClick={this.closeModal}>Close</button>
         </Modal>
