@@ -7,8 +7,8 @@ import TimeRangePicker from '../components/Filters/TimePickerFilters';
 
 const endpointOptions = [
   {label: 'capacity', value: '/api/v1/country-capacity/'},
-  {label: 'generation', value: '/api/v1/country-generation'},
-  {label: 'generation forecast', value: '/api/v1/country-forecast'},
+  {label: 'generation', value: '/api/v1/country-generation/'},
+  {label: 'generation forecast', value: '/api/v1/country-forecast/'},
 ];
 
 

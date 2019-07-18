@@ -10,8 +10,10 @@ export default class Dashboard extends Component{
     super(props);
     this.fetchFromEndpoint = this.fetchFromEndpoint.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.graphRenderingOption = this.graphRenderingOption.bind(this);
     this.state = {
       hasPreviousData: false,
+      fetchedEndpoints: [],
       endpointsData: []
     };
   }
@@ -28,6 +30,7 @@ export default class Dashboard extends Component{
   handleSubmit(endpoints, countries, dateFrom, dateTo, timeStart, timeEnd) {
     for (let endpoint of endpoints){
       let final_endpoint = endpoint.value;
+      this.setState({fetchedEndpoints: [...this.state.fetchedEndpoints, endpoint.label]});
 
       let country_iso2 = 'country_iso2=';
       for(const country of countries) {
@@ -46,15 +49,32 @@ export default class Dashboard extends Component{
         if(endpoint.label === 'capacity') {
           final_endpoint += '&reference_year_after=' + dateFrom;
         } else {
-          final_endpoint += '&reference_year_after=' + dateFrom;
+          final_endpoint += '&reference_date_after=' + dateFrom;
         }
+      }
+      if(timeStart != null && endpoint.label !== 'capacity'){
+        final_endpoint += '&generation_time_after=' + timeStart;
+      }
+      if(timeEnd != null && endpoint.label !== 'capacity'){
+        final_endpoint += '&generation_time_before=' + timeEnd;
       }
       this.fetchFromEndpoint(final_endpoint);
     }
     event.preventDefault();
   }
 
+  graphRenderingOption(){
+    if (this.state.fetchedEndpoints.length === 0){
+      return '';
+    } else if(this.state.fetchedEndpoints.length === 1){
+      return this.state.fetchedEndpoints[0];
+    } else {
+      return 'combination';
+    }
+  }
+
   render() {
+    let graphToRender = this.graphRenderingOption();
     return (
       <div className={'dashboard'}>
         <div className={'header'}>Power Map</div>
@@ -63,7 +83,7 @@ export default class Dashboard extends Component{
         </div>
         <div className={'central-map'}>
           <CentralMap />
-          <GraphModal displayData={this.state.endpointsData}/>
+          <GraphModal renderOption={graphToRender} displayData={this.state.endpointsData}/>
         </div>
         <div className={'graphs'}>Graphs</div>
       </div>

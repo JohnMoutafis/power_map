@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import CapacityGraph from '../components/Graphs/CapacityGraph';
+// import GenerationGraph from '../components/Graphs/GenerationGraph';
 import '../../css/graph-modal.css';
+import GenerationGraph from "../components/Graphs/GenerationGraph";
 
 
 export default class GraphModal extends Component {
@@ -31,6 +33,13 @@ export default class GraphModal extends Component {
   }
 
   render() {
+    let graph;
+    if (this.props.renderOption === 'capacity'){
+      graph = <CapacityGraph graphData={this.props.displayData}/>
+    } else if (this.props.renderOption === 'generation'){
+      graph = <GenerationGraph graphData={this.props.displayData}/>
+    }
+
     return (
       <div>
         <Modal
@@ -41,7 +50,7 @@ export default class GraphModal extends Component {
           contentLabel='Query Graph Representation'
         >
           <div className='graphContainer'>
-            <CapacityGraph graphData={this.props.displayData}/>
+            {graph}
           </div>
           <button onClick={this.closeModal}>Close</button>
         </Modal>

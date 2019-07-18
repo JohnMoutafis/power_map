@@ -1,4 +1,4 @@
-const capacityDataCollectionBlueprint = {
+const productionDataCollectionBlueprint = {
   'biomass': {name: 'biomass', data: []},
   'fossil_coal_derived_gas': {name: 'fossil_coal_derived_gas', data: []},
   'fossil_gas': {name: 'fossil_gas', data: []},
@@ -22,19 +22,42 @@ const capacityDataCollectionBlueprint = {
 };
 
 
-export function createCountryList(graphData) {
+export function createCapacityDataLists(graphData) {
   let countries = [];
-  let capacityDataCollection = JSON.parse(JSON.stringify(capacityDataCollectionBlueprint));
+  let capacityDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
   for(const item of graphData) {
     countries.push(item.country.name);
     for(const production of Object.keys(item)) {
       if(production in capacityDataCollection) {
-        capacityDataCollection[production].data.push(item[production])
+        capacityDataCollection[production].data.push(item[production]);
       }
     }
   }
   return {
     categories: countries,
     series: Object.keys(capacityDataCollection).map(key => capacityDataCollection[key])
+  };
+}
+
+
+export function createGenerationDataLists(graphData) {
+  let countries = [];
+  let hours = [];
+  let generationDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
+  for(const country of graphData){
+    countries.push(country.country.name);
+    for(const hourlyGeneration of country.hourly_generation){
+      hours.push(hourlyGeneration.hour_frame);
+      for(const generation of Object.keys(hourlyGeneration)){
+        if(generation in generationDataCollection){
+          generationDataCollection[generation].data.push(hourlyGeneration[generation]);
+        }
+      }
+    }
+  }
+  return {
+    countries: countries,
+    hours: hours,
+    series: Object.keys(generationDataCollection).map(key => generationDataCollection[key])
   };
 }
