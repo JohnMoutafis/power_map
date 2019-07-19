@@ -3,6 +3,7 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import {createGenerationDataLists} from '../../common/utils';
 import {timeseriesGraphOptions} from '../../common/graph-options';
+let HighchartsGroupedCategories = require('highcharts-grouped-categories')(Highcharts);
 
 
 export default class GenerationGraph extends Component {
@@ -15,8 +16,10 @@ export default class GenerationGraph extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextProps.graphData !== undefined && nextProps.graphData !== this.props.graphData){
-      const {countries, hours, series} = createGenerationDataLists(nextProps.graphData[0]);
-      this.setState({graphOptions: {...timeseriesGraphOptions('Generation', countries, hours, series)}})
+      const {countries, dates, hours, series} = createGenerationDataLists(nextProps.graphData[0]);
+      this.setState({
+        graphOptions: {...timeseriesGraphOptions('Generation', countries, dates, hours, series)}
+      })
     }
   }
 

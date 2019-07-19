@@ -42,21 +42,31 @@ export function createCapacityDataLists(graphData) {
 
 export function createGenerationDataLists(graphData) {
   let countries = [];
+  let dates = [];
   let hours = [];
   let generationDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
   for(const country of graphData){
-    countries.push(country.country.name);
+    if(!countries.includes(country.country.name)){
+      countries.push(country.country.name);
+    }
+    if(!dates.includes(country.reference_date)){
+      dates.push(country.reference_date)
+    }
     for(const hourlyGeneration of country.hourly_generation){
       hours.push(hourlyGeneration.hour_frame);
       for(const generation of Object.keys(hourlyGeneration)){
         if(generation in generationDataCollection){
           generationDataCollection[generation].data.push(hourlyGeneration[generation]);
+          // if(!('xAxis' in generationDataCollection[generation])){
+          //   generationDataCollection[generation]['xAxis'] = 1;
+          // }
         }
       }
     }
   }
   return {
     countries: countries,
+    dates: dates,
     hours: hours,
     series: Object.keys(generationDataCollection).map(key => generationDataCollection[key])
   };

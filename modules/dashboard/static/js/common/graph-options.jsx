@@ -66,27 +66,35 @@ export const simpleGraphOptions = function (countries, series) {
 };
 
 
-export const timeseriesGraphOptions = function (title, countries, hours, series) {
+export const timeseriesGraphOptions = function (title, countries, dates, hours, series) {
+  let dateCategories = [];
+  for(const date of dates){
+    dateCategories.push({
+      name: date,
+      categories: hours
+    })
+  }
+  let countryCategories = [];
+  for(const country of countries){
+    countryCategories.push({
+      name: country,
+      categories: dateCategories
+    })
+  }
+  console.log(dates);
+  console.log(series);
   return {
     chart: {
       type: 'column',
-      height: '49%'
+      height: '50%'
     },
     title: {
       text: title + ' per Country'
     },
     colors: productionColors,
-    xAxis: [
-      {categories: countries},
-      {categories: hours}
-      // {
-      //   type: 'datetime',
-      //   labels: {
-      //     format: '{value:%Y-%b-%e}'
-      //   },
-      // }
-
-    ],
+    xAxis: {
+      categories: countryCategories
+    },
     yAxis: {
       min: 0,
       title: {
@@ -121,6 +129,7 @@ export const timeseriesGraphOptions = function (title, countries, hours, series)
       pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
     },
     plotOptions: {
+      connectNulls: true,
       column: {
         stacking: 'normal',
         dataLabels: {
