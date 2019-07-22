@@ -16,9 +16,9 @@ export default class GenerationGraph extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextProps.graphData !== undefined && nextProps.graphData !== this.props.graphData){
-      const {countries, dates, hours, series} = createGenerationDataLists(nextProps.graphData[0]);
+      const {categories, series} = createGenerationDataLists(nextProps.graphData[0]);
       this.setState({
-        graphOptions: {...timeseriesGraphOptions('Generation', countries, dates, hours, series)}
+        graphOptions: {...timeseriesGraphOptions('Generation', categories, series)}
       })
     }
   }

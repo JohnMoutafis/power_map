@@ -19,7 +19,6 @@ export default class Dashboard extends Component{
   }
 
   fetchFromEndpoint(endpoint) {
-    console.log(endpoint);
     fetch(endpoint).then(
       results => {return results.json();}
     ).then(

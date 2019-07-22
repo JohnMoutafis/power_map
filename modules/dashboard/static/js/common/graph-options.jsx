@@ -35,7 +35,6 @@ export const simpleGraphOptions = function (countries, series) {
     legend: {
       align: 'right',
       verticalAlign: 'top',
-      layout: 'vertical',
       floating: true,
       backgroundColor: 'white',
       borderColor: '#CCC',
@@ -66,23 +65,7 @@ export const simpleGraphOptions = function (countries, series) {
 };
 
 
-export const timeseriesGraphOptions = function (title, countries, dates, hours, series) {
-  let dateCategories = [];
-  for(const date of dates){
-    dateCategories.push({
-      name: date,
-      categories: hours
-    })
-  }
-  let countryCategories = [];
-  for(const country of countries){
-    countryCategories.push({
-      name: country,
-      categories: dateCategories
-    })
-  }
-  console.log(dates);
-  console.log(series);
+export const timeseriesGraphOptions = function (title, categories, series) {
   return {
     chart: {
       type: 'column',
@@ -93,7 +76,7 @@ export const timeseriesGraphOptions = function (title, countries, dates, hours, 
     },
     colors: productionColors,
     xAxis: {
-      categories: countryCategories
+      categories: categories
     },
     yAxis: {
       min: 0,
@@ -111,7 +94,6 @@ export const timeseriesGraphOptions = function (title, countries, dates, hours, 
     legend: {
       align: 'right',
       verticalAlign: 'top',
-      layout: 'vertical',
       floating: true,
       backgroundColor: 'white',
       borderColor: '#CCC',
