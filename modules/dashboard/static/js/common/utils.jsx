@@ -57,7 +57,6 @@ export function createGenerationDataLists(graphData) {
       };
       for(const hourlyGeneration of country.hourly_generation){
         ref_date.categories.push(hourlyGeneration.hour_frame);
-        console.log(ref_date);
         for(const generation of Object.keys(hourlyGeneration)){
           if(generation in generationDataCollection){
             generationDataCollection[generation].data.push(hourlyGeneration[generation]);
@@ -70,5 +69,49 @@ export function createGenerationDataLists(graphData) {
   return {
     categories: Object.keys(categories).map(key => categories[key]),
     series: Object.keys(generationDataCollection).map(key => generationDataCollection[key])
+  }
+}
+
+
+export function createForecastDataList(graphData) {
+  let categories = {};
+  let forecastDataCollection = {
+    'solar_forecast': {name: 'solar_forecast', data: [], stack: 'wind_solar_forecast'},
+    'wind_onshore_forecast': {name: 'wind_onshore__forecast', data: [], stack: 'wind_solar_forecast'},
+    'wind_offshore_forecast': {name: 'wind_offshore_forecast', data: [], stack: 'wind_solar_forecast'},
+    'generation_forecast': {name: 'generation_forecast', data: [], stack: 'generation_forecast'},
+    'consumption_forecast': {name: 'consumption_forecast', data: [], stack: 'consumption_forecast'}
   };
+  for(const country of graphData) {
+    if (!(country.country.name in categories)) {
+      categories[country.country.name] = {
+        name: country.country.name,
+        categories: []
+      };
+    }
+    if (country.forecast.length) {
+      let ref_date = {
+        name: country.reference_date,
+        categories: []
+      };
+      for (const index in country.forecast) {
+        ref_date.categories.push(country.forecast[index].hour_frame);
+        for(const item of Object.keys(country.forecast[index])){
+          if(item in forecastDataCollection){
+            forecastDataCollection[item].data.push(country.forecast[index][item]);
+          }
+        }
+        for(const item of Object.keys(country.wind_solar_forecast[index])){
+          if(item in forecastDataCollection){
+            forecastDataCollection[item].data.push(country.wind_solar_forecast[index][item]);
+          }
+        }
+      }
+      categories[country.country.name].categories.push(ref_date);
+    }
+  }
+  return {
+    categories: Object.keys(categories).map(key => categories[key]),
+    series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key])
+  }
 }

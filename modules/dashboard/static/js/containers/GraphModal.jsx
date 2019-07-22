@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import CapacityGraph from '../components/Graphs/CapacityGraph';
-// import GenerationGraph from '../components/Graphs/GenerationGraph';
+import GenerationGraph from '../components/Graphs/GenerationGraph';
+import ForecastGraph from '../components/Graphs/ForecastGraph';
 import '../../css/graph-modal.css';
-import GenerationGraph from "../components/Graphs/GenerationGraph";
 
 
 export default class GraphModal extends Component {
@@ -38,6 +38,8 @@ export default class GraphModal extends Component {
       graph = <CapacityGraph graphData={this.props.displayData}/>
     } else if (this.props.renderOption === 'generation'){
       graph = <GenerationGraph graphData={this.props.displayData}/>
+    } else if (this.props.renderOption === 'generation forecast'){
+      graph = <ForecastGraph graphData={this.props.displayData}/>;
     }
 
     return (

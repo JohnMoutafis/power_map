@@ -6,6 +6,11 @@ const productionColors = [
   '#ffeb3b', '#827717', '#e1f5fe', '#b2dfdb'
 ];
 
+const forecastColors = [
+  '#ffeb3b', '#4fc3f7', '#81d4fa',
+  '#228B22', '#FF4500'
+];
+
 export const simpleGraphOptions = function (countries, series) {
   return {
     chart: {
@@ -66,17 +71,19 @@ export const simpleGraphOptions = function (countries, series) {
 
 
 export const timeseriesGraphOptions = function (title, categories, series) {
+  let graphColors = productionColors;
+  if(title.toLowerCase().includes('forecast')){graphColors = forecastColors}
   return {
     chart: {
       type: 'column',
-      height: '50%'
+      height: '49%'
     },
     title: {
       text: title + ' per Country'
     },
-    colors: productionColors,
+    colors: graphColors,
     xAxis: {
-      categories: categories
+      categories: categories,
     },
     yAxis: {
       min: 0,
@@ -94,6 +101,7 @@ export const timeseriesGraphOptions = function (title, categories, series) {
     legend: {
       align: 'right',
       verticalAlign: 'top',
+      y: 25,
       floating: true,
       backgroundColor: 'white',
       borderColor: '#CCC',
@@ -109,6 +117,9 @@ export const timeseriesGraphOptions = function (title, categories, series) {
     tooltip: {
       headerFormat: '<b>{point.x}</b><br/>',
       pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+    },
+    scrollbar: {
+      enabled: true
     },
     plotOptions: {
       connectNulls: true,

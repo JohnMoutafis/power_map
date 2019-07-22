@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import {createGenerationDataLists} from '../../common/utils';
+import {createForecastDataList} from '../../common/utils';
 import {timeseriesGraphOptions} from '../../common/graph-options';
 
 
-export default class GenerationGraph extends Component {
+export default class ForecastGraph extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,9 +15,11 @@ export default class GenerationGraph extends Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextProps.graphData !== undefined && nextProps.graphData !== this.props.graphData){
-      const {categories, series} = createGenerationDataLists(nextProps.graphData[0]);
+      const {categories, series} = createForecastDataList(nextProps.graphData[0]);
+      console.log(categories);
+      console.log(series);
       this.setState({
-        graphOptions: {...timeseriesGraphOptions('Generation', categories, series)}
+        graphOptions: {...timeseriesGraphOptions('Generation Forecast', categories, series)}
       })
     }
   }

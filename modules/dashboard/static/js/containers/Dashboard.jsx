@@ -52,10 +52,18 @@ export default class Dashboard extends Component{
         }
       }
       if(timeStart != null && endpoint.label !== 'capacity'){
-        final_endpoint += '&generation_time_after=' + timeStart;
+        if(endpoint.label === 'generation'){
+          final_endpoint += '&generation_time_after=' + timeStart;
+        } else {
+          final_endpoint += '&forecast_time_after=' + timeStart + '&wind_solar_time_after=' + timeStart;
+        }
       }
       if(timeEnd != null && endpoint.label !== 'capacity'){
-        final_endpoint += '&generation_time_before=' + timeEnd;
+        if(endpoint.label === 'generation') {
+          final_endpoint += '&generation_time_before=' + timeEnd;
+        } else {
+          final_endpoint += '&forecast_time_before=' + timeEnd + '&wind_solar_time_before=' + timeEnd;
+        }
       }
       this.fetchFromEndpoint(final_endpoint);
     }
