@@ -40,6 +40,8 @@ export default class GraphModal extends Component {
       graph = <GenerationGraph graphData={this.props.displayData}/>
     } else if (this.props.renderOption === 'generation forecast'){
       graph = <ForecastGraph graphData={this.props.displayData}/>;
+    } else if (this.props.renderOption === 'combination') {
+      graph = <h1>Combination Graphs Not Yet Implemented</h1>
     }
 
     return (

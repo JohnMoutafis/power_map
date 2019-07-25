@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const timeFormat = 'HH:mm';
 
@@ -18,12 +17,16 @@ export default class TimeRangePicker extends Component{
   }
 
   handleStartChange(start) {
-    this.props.handleTimePickerStartChange(moment(start).format(timeFormat));
+    this.props.handleTimePickerStartChange(
+      moment(start, timeFormat).isValid()? moment(start).format(timeFormat) : undefined
+    );
     this.setState({start: start});
   }
 
   handleEndChange(end) {
-    this.props.handleTimePickerEndChange(moment(end).format(timeFormat));
+    this.props.handleTimePickerEndChange(
+      moment(end, timeFormat).isValid()? moment(end).format(timeFormat) : undefined
+    );
     this.setState({end: end});
   }
 
@@ -40,7 +43,7 @@ export default class TimeRangePicker extends Component{
           timeFormat={timeFormat}
           dateFormat={timeFormat}
           isClearable={true}
-          shouldCloseOnSelect={false}
+          keepFocus={false}
         />
         <DatePicker
           placeholderText='Time End'
@@ -52,7 +55,7 @@ export default class TimeRangePicker extends Component{
           timeFormat={timeFormat}
           dateFormat={timeFormat}
           isClearable={true}
-          shouldCloseOnSelect={false}
+          keepFocus={false}
         />
       </div>
     )

@@ -1,3 +1,6 @@
+/**
+ * Capacity and Generation Data Series Prototype.
+ */
 const productionDataCollectionBlueprint = {
   'biomass': {name: 'biomass', data: []},
   'fossil_coal_derived_gas': {name: 'fossil_coal_derived_gas', data: []},
@@ -22,6 +25,13 @@ const productionDataCollectionBlueprint = {
 };
 
 
+/**
+ * Extracts Capacity per Country data from the country-capacity endpoint response,
+ * for use in HighChart.
+ *
+ * @param graphData
+ * @returns {{series: *[], categories: Array}}
+ */
 export function createCapacityDataLists(graphData) {
   let countries = [];
   let capacityDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
@@ -39,7 +49,13 @@ export function createCapacityDataLists(graphData) {
   };
 }
 
-
+/**
+ * Extracts Generation per Country data from the country-generation endpoint response,
+ * for use in HighChart.
+ *
+ * @param graphData
+ * @returns {{series: *[], categories: *[]}}
+ */
 export function createGenerationDataLists(graphData) {
   let categories = {};
   let generationDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
@@ -73,6 +89,13 @@ export function createGenerationDataLists(graphData) {
 }
 
 
+/**
+ * Extracts Generation Forecast per Country data from country-forecast endpoint response,
+ * for use in HighChart.
+ *
+ * @param graphData
+ * @returns {{series: *[], categories: *[]}}
+ */
 export function createForecastDataList(graphData) {
   let categories = {};
   let forecastDataCollection = {

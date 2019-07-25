@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const returnDateFormat = 'YYYY-MM-DD';
 
@@ -18,12 +17,16 @@ export default class DateRangePicker extends Component{
   }
 
   handleFromChange(from) {
-    this.props.handleDatePickerFromChange(moment(from).format(returnDateFormat));
+    this.props.handleDatePickerFromChange(
+      moment(from, returnDateFormat).isValid()? moment(from).format(returnDateFormat) : undefined
+    );
     this.setState({from: from});
   }
 
   handleToChange(to) {
-    this.props.handleDatePickerToChange(moment(to).format(returnDateFormat));
+    this.props.handleDatePickerToChange(
+      moment(to, returnDateFormat).isValid()? moment(to).format(returnDateFormat) : undefined
+    );
     this.setState({to: to});
   }
 
@@ -36,33 +39,31 @@ export default class DateRangePicker extends Component{
         <DatePicker
           placeholderText='From'
           dateFormat={format}
-          selected={from}
           selectsStart
+          showYearDropdown
+          showMonthDropdown
+          dropdownMode='select'
+          selected={from}
           startDate={from}
           endDate={to}
           onChange={this.handleFromChange}
           todayButton={'Today'}
           isClearable={true}
-          shouldCloseOnSelect={false}
-          showYearDropdown
-          showMonthDropdown
-          dropdownMode='select'
         />
         <DatePicker
           placeholderText='To'
           dateFormat={format}
-          selected={to}
           selectsEnd
+          showYearDropdown
+          showMonthDropdown
+          dropdownMode='select'
+          selected={to}
           startDate={from}
           endDate={to}
           minDate={from}
           onChange={this.handleToChange}
           todayButton={'Today'}
           isClearable={true}
-          shouldCloseOnSelect={false}
-          showYearDropdown
-          showMonthDropdown
-          dropdownMode='select'
         />
       </div>
     )

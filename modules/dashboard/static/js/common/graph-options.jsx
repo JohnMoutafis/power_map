@@ -38,6 +38,7 @@ export const simpleGraphOptions = function (countries, series) {
       }
     },
     legend: {
+      y: 25,
       align: 'right',
       verticalAlign: 'top',
       floating: true,
@@ -99,9 +100,9 @@ export const timeseriesGraphOptions = function (title, categories, series) {
       }
     },
     legend: {
+      y: 25,
       align: 'right',
       verticalAlign: 'top',
-      y: 25,
       floating: true,
       backgroundColor: 'white',
       borderColor: '#CCC',

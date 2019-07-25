@@ -8,14 +8,21 @@ import '../../css/dashboard.css';
 export default class Dashboard extends Component{
   constructor(props) {
     super(props);
+    this.cleanFetchedData = this.cleanFetchedData.bind(this);
     this.fetchFromEndpoint = this.fetchFromEndpoint.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.graphRenderingOption = this.graphRenderingOption.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      hasPreviousData: false,
       fetchedEndpoints: [],
       endpointsData: []
     };
+  }
+
+  cleanFetchedData() {
+    this.setState({
+      fetchedEndpoints: [],
+      endpointsData: []
+    })
   }
 
   fetchFromEndpoint(endpoint) {
@@ -27,9 +34,11 @@ export default class Dashboard extends Component{
   }
 
   handleSubmit(endpoints, countries, dateFrom, dateTo, timeStart, timeEnd) {
+    this.cleanFetchedData();
+    let tmpFetchedEndpoints = [];
     for (let endpoint of endpoints){
       let final_endpoint = endpoint.value;
-      this.setState({fetchedEndpoints: [...this.state.fetchedEndpoints, endpoint.label]});
+      tmpFetchedEndpoints.push(endpoint.label);
 
       let country_iso2 = 'country_iso2=';
       for(const country of countries) {
@@ -51,6 +60,7 @@ export default class Dashboard extends Component{
           final_endpoint += '&reference_date_after=' + dateFrom;
         }
       }
+
       if(timeStart != null && endpoint.label !== 'capacity'){
         if(endpoint.label === 'generation'){
           final_endpoint += '&generation_time_after=' + timeStart;
@@ -67,6 +77,7 @@ export default class Dashboard extends Component{
       }
       this.fetchFromEndpoint(final_endpoint);
     }
+    this.setState({fetchedEndpoints: tmpFetchedEndpoints});
     event.preventDefault();
   }
 

@@ -3,6 +3,7 @@ import EndpointFilters from '../components/Filters/EndpointFilter';
 import CountryFilters from '../components/Filters/CountryFilters';
 import DateRangePicker from '../components/Filters/DatePickerFilters';
 import TimeRangePicker from '../components/Filters/TimePickerFilters';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 const endpointOptions = [
