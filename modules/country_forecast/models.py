@@ -1,11 +1,11 @@
 from django.db import models
 
-from base.models import BaseModel, BaseDataModel
+from base.models import BaseDataModel, BaseModel
 from modules.countries.models import Country
 
 
 class GenerationForecast(BaseModel):
-    hour_frame = models.CharField(max_length=14, default='', blank=True)
+    hour_frame = models.TimeField(auto_now=False, null=True, blank=True)
     generation_forecast = models.IntegerField(default=0, null=True, blank=True)
     consumption_forecast = models.IntegerField(default=0, null=True, blank=True)
 
@@ -16,7 +16,7 @@ class GenerationForecast(BaseModel):
 
 
 class WindSolarGenerationForecast(BaseModel):
-    hour_frame = models.CharField(max_length=14, default='', blank=True)
+    hour_frame = models.TimeField(auto_now=False, null=True, blank=True)
     solar_forecast = models.IntegerField(default=0, null=True, blank=True)
     wind_onshore_forecast = models.IntegerField(default=0, null=True, blank=True)
     wind_offshore_forecast = models.IntegerField(default=0, null=True, blank=True)

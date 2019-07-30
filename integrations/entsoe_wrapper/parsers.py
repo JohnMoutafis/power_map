@@ -50,39 +50,38 @@ def entsoe_generation_per_type_parser(content):
         response.update({production_type: {}})
         resolution = entry.find('resolution').get_text()
 
-        hour_frame = '{}:00 - {}:00'
-        frame_start, frame_end = 0, 1
+        hour_frame = '{}:00'
+        current_hour = 0
         if resolution == 'PT60M':
             for point in entry.find_all('Point'):
                 response[production_type].update({
-                    hour_frame.format(
-                        str(frame_start).zfill(2), str(frame_end).zfill(2)
-                    ): int(point.find('quantity').get_text())
+                    hour_frame.format(str(current_hour).zfill(2)): int(point.find('quantity').get_text())
                 })
-                frame_start = frame_end
-                frame_end += 1
-                frame_end = 0 if frame_end == 24 else frame_end
+                current_hour += 1
+                current_hour= 0 if current_hour == 24 else current_hour
         elif resolution == 'PT30M':
             i = 0
             points = entry.find_all('Point')
             while i < len(points):
                 response[production_type].update({
                     hour_frame.format(
-                        str(frame_start).zfill(2), str(frame_end).zfill(2)
-                    ): int(points[i].find('quantity').get_text()) + int(points[i+1].find('quantity').get_text())
+                        str(current_hour).zfill(2)): (
+                            int(points[i].find('quantity').get_text()) + int(points[i+1].find('quantity').get_text())
+                        )
                 })
-                frame_start = frame_end
-                frame_end += 1
-                frame_end = 0 if frame_end == 24 else frame_end
+                current_hour += 1
+                current_hour = 0 if current_hour == 24 else current_hour
                 i += 2
         else:
             continue
-        hours_covered.append(frame_end)
+        hours_covered.append(current_hour)
 
     if len(set(hours_covered)) == 1:
         response.update({'hours_covered': hours_covered[0]})
-    else:
+    elif len(set(hours_covered)) > 1:
         response.update({'hours_covered': min(hours_covered)})
+    else:
+        response.update({'hours_covered': 0})
 
     return response
 
@@ -99,8 +98,8 @@ def entsoe_generation_forecast_parser(content):
             generation_forecast: {hour_frame: forecast}, consumption_forecast: {hour_frame: forecast}
         } format.
     """
-    hour_frame_template = '{}:00 - {}:00'
-    frame_start, frame_end = 0, 1
+    hour_frame_template = '{}:00'
+    current_hour = 0
     response = {'generation_forecast': {}, 'consumption_forecast': {}}
     soup = BeautifulSoup(content.decode('utf-8'), features='xml')
     generation = soup.find_all('TimeSeries')[0]
@@ -115,7 +114,7 @@ def entsoe_generation_forecast_parser(content):
 
     if resolution == 'PT60M':
         for n in range(len(generation_points)):
-            hour_frame = hour_frame_template.format(str(frame_start).zfill(2), str(frame_end).zfill(2))
+            hour_frame = hour_frame_template.format(str(current_hour).zfill(2))
             response['generation_forecast'].update({
                 hour_frame: int(generation_points[n].find('quantity').get_text())
             })
@@ -126,13 +125,12 @@ def entsoe_generation_forecast_parser(content):
             except IndexError:
                 response['consumption_forecast'].update({hour_frame: 0})
 
-            frame_start = frame_end
-            frame_end += 1
-            frame_end = 0 if frame_end == 24 else frame_end
+            current_hour += 1
+            current_hour = 0 if current_hour == 24 else current_hour
     elif resolution == 'PT30M':
         n = 0
         while n < len(generation_points):
-            hour_frame = hour_frame_template.format(str(frame_start).zfill(2), str(frame_end).zfill(2))
+            hour_frame = hour_frame_template.format(str(current_hour).zfill(2))
             response['generation_forecast'].update({
                 hour_frame: (
                     int(generation_points[n].find('quantity').get_text()) +
@@ -149,9 +147,8 @@ def entsoe_generation_forecast_parser(content):
             except IndexError:
                 response['consumption_forecast'].update({hour_frame: 0})
 
-            frame_start = frame_end
-            frame_end += 1
-            frame_end = 0 if frame_end == 24 else frame_end
+            current_hour += 1
+            current_hour = 0 if current_hour == 24 else current_hour
             n += 2
     return response
 
@@ -170,8 +167,8 @@ def entsoe_wind_solar_forecast_parser(content):
             wind_onshore_forecast: {hour_frame: forecast}
         } format.
     """
-    hour_frame_template = '{}:00 - {}:00'
-    frame_start, frame_end = 0, 1
+    hour_frame_template = '{}:00'
+    current_hour = 0
     response = {'solar_forecast': {}, 'wind_offshore_forecast': {}, 'wind_onshore_forecast': {}}
     soup = BeautifulSoup(content.decode('utf-8'), features='xml')
 
@@ -193,7 +190,7 @@ def entsoe_wind_solar_forecast_parser(content):
     resolution = soup.find('resolution').get_text()
     if resolution == 'PT60M':
         for n in range(max([len(solar), len(wind_offshore), len(wind_onshore)])):
-            hour_frame = hour_frame_template.format(str(frame_start).zfill(2), str(frame_end).zfill(2))
+            hour_frame = hour_frame_template.format(str(current_hour).zfill(2))
             try:
                 response['solar_forecast'].update({
                     hour_frame: int(solar[n].find('quantity').get_text()) if solar else 0
@@ -214,13 +211,12 @@ def entsoe_wind_solar_forecast_parser(content):
                 })
             except IndexError:
                 response['wind_onshore_forecast'].update({hour_frame: 0})
-            frame_start = frame_end
-            frame_end += 1
-            frame_end = 0 if frame_end == 24 else frame_end
+            current_hour += 1
+            current_hour = 0 if current_hour == 24 else current_hour
     elif resolution == 'PT30M':
         n = 0
         while n < max([len(solar), len(wind_offshore), len(wind_onshore)]):
-            hour_frame = hour_frame_template.format(str(frame_start).zfill(2), str(frame_end).zfill(2))
+            hour_frame = hour_frame_template.format(str(current_hour).zfill(2))
             try:
                 response['solar_forecast'].update({
                     hour_frame: (
@@ -250,9 +246,8 @@ def entsoe_wind_solar_forecast_parser(content):
                 })
             except IndexError:
                 response['wind_onshore_forecast'].update({hour_frame: 0})
-            frame_start = frame_end
-            frame_end += 1
-            frame_end = 0 if frame_end == 24 else frame_end
+            current_hour += 1
+            current_hour = 0 if current_hour == 24 else current_hour
             n += 2
 
     return response

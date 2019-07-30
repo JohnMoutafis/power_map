@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Map, GeoJSON } from 'react-leaflet';
-
+import { Map, GeoJSON, TileLayer } from 'react-leaflet';
+import Loader from 'react-loader';
+import '../../css/central-map.css';
 
 
 export default class CentralMap extends Component{
@@ -25,27 +26,20 @@ export default class CentralMap extends Component{
   }
 
   render() {
-    const hasData = this.state.hasData;
-    let geoJSONLayer;
     let style = {
-      color: '#4a83ec',
+      color: '#000000',
       weight: 0.5,
       fillColor: "#1a1d62",
-      fillOpacity: 0.2,
+      fillOpacity: 0.5,
     };
-
-    if (hasData) {
-      geoJSONLayer = <GeoJSON data={this.state.borders} style={style}/>
-    } else {
-      geoJSONLayer = <h1>Fetching Border Data ...</h1>
-    }
 
     return (
       <Map
-        center={[55, 20]}
+        center={[49.85706, 14.78247]}
+        maxBounds={[[71.59175, -10.42977], [32.46931, 45.48272]]}
         zoom={4}
         maxZoom={6}
-        minZoom={3}
+        minZoom={4}
         attributionControl={true}
         zoomControl={true}
         doubleClickZoom={true}
@@ -54,7 +48,16 @@ export default class CentralMap extends Component{
         animate={true}
         easeLinearity={0.35}
       >
-        {geoJSONLayer}
+        <Loader loaded={this.state.hasData} color='#07620A' scale={3.00}>
+          <TileLayer
+            url={'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'}
+          />
+          <GeoJSON data={this.state.borders} style={style}/>
+          <TileLayer
+            url={'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'}
+            zIndex={10}
+          />
+        </Loader>
       </Map>
     )
   }

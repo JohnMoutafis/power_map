@@ -1,0 +1,17 @@
+.graphs {grid-area: graphs}
+.header {grid-area: header;}
+.filters {grid-area: filters;}
+.central-map {grid-area: central-map;}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 24vw 50vw 24vw;
+  grid-template-rows: 3vh 95vh;
+  grid-template-areas:
+    'header header header'
+    'filters central-map graphs';
+}
+
+.dashboard > div {
+  text-align: center;
+}

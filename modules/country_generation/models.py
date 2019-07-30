@@ -1,11 +1,11 @@
 from django.db import models
 
-from base.models import BaseModel, BaseDataModel
+from base.models import BaseDataModel, BaseModel
 from modules.countries.models import Country
 
 
 class GenerationPerType(BaseModel):
-    hour_frame = models.CharField(max_length=14, default='', blank=True)
+    hour_frame = models.TimeField(auto_now=False, null=True, blank=True)
     # Types
     biomass = models.IntegerField(default=0, null=True, blank=True)
     fossil_coal_derived_gas = models.IntegerField(default=0, null=True, blank=True)
