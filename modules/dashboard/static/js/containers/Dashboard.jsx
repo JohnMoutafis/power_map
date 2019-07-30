@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CentralMap from '../components/CentralMap';
 import Filters from './Filters';
 import GraphModal from './GraphModal';
+import GraphStorageArea from './GraphStorageArea';
 import '../../css/dashboard.css';
 
 
@@ -14,7 +15,8 @@ export default class Dashboard extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       fetchedEndpoints: [],
-      endpointsData: []
+      endpointsData: [],
+      savedGraphs: [],
     };
   }
 
@@ -103,7 +105,9 @@ export default class Dashboard extends Component{
           <CentralMap />
           <GraphModal renderOption={graphToRender} displayData={this.state.endpointsData}/>
         </div>
-        <div className={'graphs'}>Graphs</div>
+        <div className={'graphs'}>
+          <GraphStorageArea savedGraphs={this.state.savedGraphs}/>
+        </div>
       </div>
     )
   }
