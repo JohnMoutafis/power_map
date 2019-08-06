@@ -13,6 +13,7 @@ export default class Dashboard extends Component{
     this.fetchFromEndpoint = this.fetchFromEndpoint.bind(this);
     this.graphRenderingOption = this.graphRenderingOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSaveGraph = this.handleSaveGraph.bind(this);
     this.state = {
       fetchedEndpoints: [],
       endpointsData: [],
@@ -93,6 +94,15 @@ export default class Dashboard extends Component{
     }
   }
 
+  handleSaveGraph(graph){
+    let savedGraphs = [...this.state.savedGraphs];
+    if(savedGraphs.length === 3){
+      savedGraphs.shift();
+    }
+    savedGraphs.push(graph);
+    this.setState({savedGraphs: savedGraphs});
+  }
+
   render() {
     let graphToRender = this.graphRenderingOption();
     return (
@@ -103,7 +113,11 @@ export default class Dashboard extends Component{
         </div>
         <div className={'central-map'}>
           <CentralMap />
-          <GraphModal renderOption={graphToRender} displayData={this.state.endpointsData}/>
+          <GraphModal
+            renderOption={graphToRender}
+            displayData={this.state.endpointsData}
+            handleSaveGraph={this.handleSaveGraph}
+          />
         </div>
         <div className={'graphs'}>
           <GraphStorageArea savedGraphs={this.state.savedGraphs}/>

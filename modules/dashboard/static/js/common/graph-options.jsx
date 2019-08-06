@@ -15,7 +15,7 @@ export const simpleGraphOptions = function (countries, series) {
   return {
     chart: {
       type: 'column',
-      height: '49%'
+      height: '47%',
     },
     title: {
       text: 'Capacity per Country'
@@ -38,7 +38,7 @@ export const simpleGraphOptions = function (countries, series) {
       }
     },
     legend: {
-      y: 25,
+      layout: 'vertical',
       align: 'right',
       verticalAlign: 'top',
       floating: true,
@@ -46,12 +46,6 @@ export const simpleGraphOptions = function (countries, series) {
       borderColor: '#CCC',
       borderWidth: 1,
       shadow: false
-    },
-    loading: {
-      hideDuration: 100,
-      showDuration: 100,
-      labelStyle: {"fontWeight": "bold", "position": "relative", "top": "45%"},
-      style: {"position": "absolute", "backgroundColor": "#ffffff", "opacity": 0.5, "textAlign": "center"}
     },
     tooltip: {
       headerFormat: '<b>{point.x}</b><br/>',
@@ -66,6 +60,15 @@ export const simpleGraphOptions = function (countries, series) {
         }
       }
     },
+    responsive: {
+      rules: [{
+        condition: { maxWidth: '700' },
+        chartOptions: {
+          tooltip: { enabled: false },
+          legend: { enabled: false }
+        }
+      }]
+    },
     series: series
   };
 };
@@ -77,7 +80,7 @@ export const timeseriesGraphOptions = function (title, categories, series) {
   return {
     chart: {
       type: 'column',
-      height: '49%'
+      height: '47%'
     },
     title: {
       text: title + ' per Country'
@@ -109,18 +112,9 @@ export const timeseriesGraphOptions = function (title, categories, series) {
       borderWidth: 1,
       shadow: false
     },
-    loading: {
-      hideDuration: 100,
-      showDuration: 100,
-      labelStyle: {"fontWeight": "bold", "position": "relative", "top": "45%"},
-      style: {"position": "absolute", "backgroundColor": "#ffffff", "opacity": 0.5, "textAlign": "center"}
-    },
     tooltip: {
       headerFormat: '<b>{point.x}</b><br/>',
       pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-    },
-    scrollbar: {
-      enabled: true
     },
     plotOptions: {
       connectNulls: true,
@@ -131,6 +125,15 @@ export const timeseriesGraphOptions = function (title, categories, series) {
           color: 'white'
         }
       }
+    },
+    responsive: {
+      rules: [{
+        condition: { maxWidth: '500' },
+        chartOptions: {
+          tooltip: { enabled: false },
+          legend: { enabled: false }
+        }
+      }]
     },
     series: series
   };
