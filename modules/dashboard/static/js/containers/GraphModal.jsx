@@ -19,16 +19,11 @@ export default class GraphModal extends Component {
     }
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
+  openModal() { this.setState({modalIsOpen: true}); }
 
-  afterOpenModal() {
-  }
+  afterOpenModal() {}
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
+  closeModal() { this.setState({modalIsOpen: false}); }
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.displayData[0] !== undefined) {
@@ -54,9 +49,7 @@ export default class GraphModal extends Component {
     this.openModal();
   }
 
-  onSave(){
-    this.props.handleSaveGraph(this.state.graph);
-  }
+  onSave(){ this.props.handleSaveGraph(this.state.graph); }
 
   render() {
     return (
