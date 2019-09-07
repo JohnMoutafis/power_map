@@ -11,7 +11,7 @@ module.exports = merge(base, {
   output: {
     path: path.resolve('./staticfiles/assets/dist/'),
     filename: '[name]-[hash].js',
-    publicPath: 'assets/dist'
+    // publicPath: 'assets/dist/'
   },
   plugins: [
     new BundleTracker({filename: './webpack-stats-prod.json'}),

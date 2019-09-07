@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  postgis:
+    image: kartoza/postgis:9.6-2.4
+    volumes:
+      - power_map_data:/var/lib/postgresql
+    env_file:
+      - .env
+    environment:
+      ALLOW_IP_RANGE: 0.0.0.0/0
+
+  redis:
+    image: redis:4
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    image: power_map
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgis
+      - redis
+
+  worker:
+    image: power_map
+    command: celery -A power_map worker -l info
+    env_file:
+      - .env
+    depends_on:
+      - postgis
+      - redis
+      - web
+
+  beat:
+    image: power_map
+    command: celery -A power_map beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    depends_on:
+      - postgis
+      - redis
+      - web
+      - worker
+
+volumes:
+  power_map_data: {}

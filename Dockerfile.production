@@ -1,0 +1,33 @@
+FROM node:12.2.0-alpine AS build
+MAINTAINER John Moutafis <jg2moutafis@gmail.com>
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY .babelrc .
+COPY package.json .
+COPY package-lock.json .
+COPY webpack.base.config.js .
+COPY webpack.prod.config.js .
+
+RUN npm install
+COPY ./modules/dashboard/static/ ./modules/dashboard/static/
+RUN npm run build-production
+
+FROM intelligems/geodjango:0.1 AS production
+MAINTAINER John Moutafis <jg2moutafis@gmail.com>
+
+#RUN apt-get update && apt-get install -y tk
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt /usr/src/app/
+RUN pip install -r requirements.txt
+ENV GDAL_SKIP=DODS
+
+COPY ./ /usr/src/app/
+COPY --from=build /usr/src/app/staticfiles/assets/dist ./staticfiles/assets/dist
+COPY --from=build /usr/src/app/webpack-stats-prod.json ./webpack-stats-prod.json
+
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
