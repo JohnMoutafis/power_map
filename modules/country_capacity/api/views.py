@@ -2,7 +2,7 @@ from datetime import date
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 import django_filters
@@ -42,6 +42,7 @@ class CountryCapacityViewSet(viewsets.ModelViewSet):
     """A simple ViewSet for viewing CountryCapacity Info."""
     queryset = CountryCapacity.objects.all()
     serializer_class = CountryCapacitySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     filter_class = CountryCapacityFilterSet
 
     @action(

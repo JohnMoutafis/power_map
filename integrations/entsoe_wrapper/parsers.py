@@ -58,17 +58,23 @@ def entsoe_generation_per_type_parser(content):
                     hour_frame.format(str(current_hour).zfill(2)): int(point.find('quantity').get_text())
                 })
                 current_hour += 1
-                current_hour= 0 if current_hour == 24 else current_hour
+                current_hour = 0 if current_hour == 24 else current_hour
         elif resolution == 'PT30M':
             i = 0
             points = entry.find_all('Point')
             while i < len(points):
-                response[production_type].update({
-                    hour_frame.format(
-                        str(current_hour).zfill(2)): (
-                            int(points[i].find('quantity').get_text()) + int(points[i+1].find('quantity').get_text())
-                        )
-                })
+                try:
+                    response[production_type].update({
+                        hour_frame.format(
+                            str(current_hour).zfill(2)): (
+                                int(points[i].find('quantity').get_text()) +
+                                int(points[i+1].find('quantity').get_text())
+                            )
+                    })
+                except IndexError:
+                    # TODO: This need to be handled better.
+                    response[production_type].update({hour_frame.format(str(current_hour).zfill(2)): 0})
+
                 current_hour += 1
                 current_hour = 0 if current_hour == 24 else current_hour
                 i += 2

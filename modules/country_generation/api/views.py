@@ -1,7 +1,7 @@
 import django_filters
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework_gis.filters import GeometryFilter
 
@@ -30,6 +30,7 @@ class CountryGenerationViewSet(viewsets.ModelViewSet):
     """A simple ViewSet for viewing CountryGeneration Info."""
     queryset = CountryGeneration.objects.all()
     serializer_class = CountryGenerationSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     filter_class = CountryGenerationFilterSet
 
     def get_permissions(self):

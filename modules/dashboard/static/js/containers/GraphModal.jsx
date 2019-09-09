@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import CapacityGraph from '../components/Graphs/CapacityGraph';
-import GenerationGraph from '../components/Graphs/GenerationGraph';
-import ForecastGraph from '../components/Graphs/ForecastGraph';
+import GraphComponent from '../components/Graphs/GraphComponent';
+import {simpleGraphOptions, timeseriesGraphOptions} from '../common/graph-options';
+import {createCapacityDataLists, createForecastDataList, createGenerationDataLists} from '../common/utils';
 import '../../css/graph-modal.css';
 
 
@@ -12,38 +12,46 @@ export default class GraphModal extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.onSave = this.onSave.bind(this);
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      graph: undefined
     }
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
+  openModal() { this.setState({modalIsOpen: true}); }
 
-  afterOpenModal() {
-  }
+  afterOpenModal() {}
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
-  }
+  closeModal() { this.setState({modalIsOpen: false}); }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    this.openModal()
+    if (nextProps.displayData[0] !== undefined) {
+      let graph = <div>No Data Passed to Graph</div>;
+      let graphOptions = undefined;
+      if (nextProps.renderOption === 'combination') {
+        graph = <div>Combination graphs Not Yet Implemented</div>
+      } else {
+        if (nextProps.renderOption === 'capacity') {
+          const {categories, series} = createCapacityDataLists(nextProps.displayData[0]);
+          graphOptions = {...simpleGraphOptions(categories, series)};
+        } else if (nextProps.renderOption === 'generation'){
+          const {categories, series} = createGenerationDataLists(nextProps.displayData[0]);
+          graphOptions = {...timeseriesGraphOptions('Generation', categories, series)}
+        } else if (nextProps.renderOption === 'generation forecast'){
+          const {categories, series} = createForecastDataList(nextProps.displayData[0]);
+          graphOptions = {...timeseriesGraphOptions('Generation Forecast', categories, series)}
+        }
+        graph = <GraphComponent graphOptions={graphOptions}/>;
+      }
+      this.setState({graph: graph})
+    }
+    this.openModal();
   }
 
-  render() {
-    let graph;
-    if (this.props.renderOption === 'capacity'){
-      graph = <CapacityGraph graphData={this.props.displayData}/>
-    } else if (this.props.renderOption === 'generation'){
-      graph = <GenerationGraph graphData={this.props.displayData}/>
-    } else if (this.props.renderOption === 'generation forecast'){
-      graph = <ForecastGraph graphData={this.props.displayData}/>;
-    } else if (this.props.renderOption === 'combination') {
-      graph = <h1>Combination Graphs Not Yet Implemented</h1>
-    }
+  onSave(){ this.props.handleSaveGraph(this.state.graph); }
 
+  render() {
     return (
       <div>
         <Modal
@@ -53,10 +61,13 @@ export default class GraphModal extends Component {
           ariaHideApp={false}
           contentLabel='Query Graph Representation'
         >
-          <div className='graphContainer'>
-            {graph}
+          <div>
+            <button onClick={this.onSave}>Save</button>
+            <button onClick={this.closeModal}>Close</button>
           </div>
-          <button onClick={this.closeModal}>Close</button>
+          <div className='graphContainer'>
+            {this.state.graph}
+          </div>
         </Modal>
       </div>
     )
