@@ -17,7 +17,6 @@ RUN npm run build-production
 FROM intelligems/geodjango:0.1 AS production
 MAINTAINER John Moutafis <jg2moutafis@gmail.com>
 
-#RUN apt-get update && apt-get install -y tk
 ENV PYTHONUNBUFFERED=1
 
 COPY requirements.txt /usr/src/app/

@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from celery import shared_task
 from django.db.models import Q
@@ -14,7 +15,7 @@ logger = logging.getLogger('django')
 
 
 @shared_task
-def update_country_capacity(year, country='all'):
+def update_country_capacity(year=None, country='all'):
     """
     Updates the given country's installed capacity info for a given year.
 
@@ -22,6 +23,7 @@ def update_country_capacity(year, country='all'):
         year:    Year in standard format (4 digit string)
         country: A country identifier (name, iso2, iso3 or all for every country)
     """
+    year = year if year else datetime.now().year
     params = {
         'securityToken': settings.ENTSOE_SECURITY_TOKEN,
         'documentType': 'A68',

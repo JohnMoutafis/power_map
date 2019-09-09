@@ -28,7 +28,10 @@ class UpdateCapacitySerializer(serializers.Serializer):
     year = serializers.CharField(min_length=4, max_length=4, default=str(datetime.now().year))
 
     def validate(self, attrs):
+        attrs = super().validate(attrs)
         try:
-            int(attrs('year'))
+            int(attrs['year'])
         except ValueError:
             raise ValidationError('Must be a valid Year value.')
+
+        return attrs
