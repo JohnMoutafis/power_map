@@ -32,13 +32,13 @@ export default class GraphModal extends Component {
       if (nextProps.renderOption === 'combination') {
         graph = <div>Combination graphs Not Yet Implemented</div>
       } else {
-        if (nextProps.renderOption === 'capacity') {
+        if (nextProps.renderOption === 'Generation Capacity') {
           const {categories, series} = createCapacityDataLists(nextProps.displayData[0]);
           graphOptions = {...simpleGraphOptions(categories, series)};
-        } else if (nextProps.renderOption === 'generation'){
+        } else if (nextProps.renderOption === 'Actual Generation'){
           const {categories, series} = createGenerationDataLists(nextProps.displayData[0]);
           graphOptions = {...timeseriesGraphOptions('Generation', categories, series)}
-        } else if (nextProps.renderOption === 'generation forecast'){
+        } else if (nextProps.renderOption === 'Generation Forecast'){
           const {categories, series} = createForecastDataList(nextProps.displayData[0]);
           graphOptions = {...timeseriesGraphOptions('Generation Forecast', categories, series)}
         }
@@ -62,7 +62,7 @@ export default class GraphModal extends Component {
           contentLabel='Query Graph Representation'
         >
           <div>
-            <button onClick={this.onSave}>Save</button>
+            <button onClick={this.onSave}>Keep</button>
             <button onClick={this.closeModal}>Close</button>
           </div>
           <div className='graphContainer'>

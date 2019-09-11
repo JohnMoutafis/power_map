@@ -50,7 +50,7 @@ export default class GraphStorageArea extends Component {
   render() {
     return(
       <div>
-        <h3>Saved Graphs</h3>
+        <h3>Graphs History</h3>
         {this.state.savedGraphsArea}
         <Modal
           isOpen={this.state.modalIsOpen}

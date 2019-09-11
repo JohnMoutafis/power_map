@@ -15,7 +15,7 @@ export default class Dashboard extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSaveGraph = this.handleSaveGraph.bind(this);
     this.state = {
-      fetchedEndpoints: [],
+      fetchedEndpoint: '',
       endpointsData: [],
       savedGraphs: [],
     };
@@ -23,7 +23,7 @@ export default class Dashboard extends Component{
 
   cleanFetchedData() {
     this.setState({
-      fetchedEndpoints: [],
+      fetchedEndpoint: '',
       endpointsData: []
     })
   }
@@ -36,63 +36,51 @@ export default class Dashboard extends Component{
     ).catch(err => {throw err})
   }
 
-  handleSubmit(endpoints, countries, dateFrom, dateTo, timeStart, timeEnd) {
+  handleSubmit(endpoint, countries, dateFrom, dateTo, timeStart, timeEnd) {
     this.cleanFetchedData();
-    let tmpFetchedEndpoints = [];
-    for (let endpoint of endpoints){
-      let final_endpoint = endpoint.value;
-      tmpFetchedEndpoints.push(endpoint.label);
+    let final_endpoint = endpoint.value;
 
-      let country_iso2 = 'country_iso2=';
-      for(const country of countries) {
-        country_iso2 += (country.value + ',')
-      }
-      final_endpoint += '?' + country_iso2.slice(0, -1);
-
-      if(dateTo != null) {
-        if(endpoint.label === 'capacity') {
-          final_endpoint += '&reference_year_before=' + dateTo;
-        } else {
-          final_endpoint += '&reference_date_before=' + dateTo
-        }
-      }
-      if(dateFrom != null){
-        if(endpoint.label === 'capacity') {
-          final_endpoint += '&reference_year_after=' + dateFrom;
-        } else {
-          final_endpoint += '&reference_date_after=' + dateFrom;
-        }
-      }
-
-      if(timeStart != null && endpoint.label !== 'capacity'){
-        if(endpoint.label === 'generation'){
-          final_endpoint += '&generation_time_after=' + timeStart;
-        } else {
-          final_endpoint += '&forecast_time_after=' + timeStart + '&wind_solar_time_after=' + timeStart;
-        }
-      }
-      if(timeEnd != null && endpoint.label !== 'capacity'){
-        if(endpoint.label === 'generation') {
-          final_endpoint += '&generation_time_before=' + timeEnd;
-        } else {
-          final_endpoint += '&forecast_time_before=' + timeEnd + '&wind_solar_time_before=' + timeEnd;
-        }
-      }
-      this.fetchFromEndpoint(final_endpoint);
+    let country_iso2 = 'country_iso2=';
+    for(const country of countries) {
+      country_iso2 += (country.value + ',')
     }
-    this.setState({fetchedEndpoints: tmpFetchedEndpoints});
-    event.preventDefault();
+    final_endpoint += '?' + country_iso2.slice(0, -1);
+
+    if(dateTo != null) {
+      if(endpoint.label === 'Generation Capacity') {
+        final_endpoint += '&reference_year_before=' + dateTo;
+      } else {
+        final_endpoint += '&reference_date_before=' + dateTo
+      }
+    }
+    if(dateFrom != null){
+      if(endpoint.label === 'Generation Capacity') {
+        final_endpoint += '&reference_year_after=' + dateFrom;
+      } else {
+        final_endpoint += '&reference_date_after=' + dateFrom;
+      }
+    }
+
+    if(timeStart != null && endpoint.label !== 'Generation Capacity'){
+      if(endpoint.label === 'Actual Generation'){
+        final_endpoint += '&generation_time_after=' + timeStart;
+      } else {
+        final_endpoint += '&forecast_time_after=' + timeStart + '&wind_solar_time_after=' + timeStart;
+      }
+    }
+    if(timeEnd != null && endpoint.label !== 'Generation Capacity'){
+      if(endpoint.label === 'Actual Generation') {
+        final_endpoint += '&generation_time_before=' + timeEnd;
+      } else {
+        final_endpoint += '&forecast_time_before=' + timeEnd + '&wind_solar_time_before=' + timeEnd;
+      }
+    }
+
+    this.fetchFromEndpoint(final_endpoint);
+    this.setState({fetchedEndpoint: endpoint.label});
   }
 
-  graphRenderingOption(){
-    if (this.state.fetchedEndpoints.length === 0){
-      return '';
-    } else if(this.state.fetchedEndpoints.length === 1){
-      return this.state.fetchedEndpoints[0];
-    } else {
-      return 'combination';
-    }
-  }
+  graphRenderingOption(){ return(this.state.fetchedEndpoint); }
 
   handleSaveGraph(graph){
     let savedGraphs = [...this.state.savedGraphs];

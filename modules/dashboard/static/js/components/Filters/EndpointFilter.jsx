@@ -11,12 +11,10 @@ export default class EndpointFilters extends Component{
     return (
       <Select
         value={this.props.selectedEndpoints}
-        defaultValue={this.props.defaultValue}
         onChange={this.props.handleChange}
         options={this.props.endpointOptions}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={true}
         components={animatedComponents}
-        isMulti
       />
     )
   }

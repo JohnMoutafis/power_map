@@ -7,9 +7,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 
 const endpointOptions = [
-  {label: 'capacity', value: '/api/v1/country-capacity/'},
-  {label: 'generation', value: '/api/v1/country-generation/'},
-  {label: 'generation forecast', value: '/api/v1/country-forecast/'},
+  {label: 'Generation Capacity', value: '/api/v1/country-capacity/'},
+  {label: 'Actual Generation', value: '/api/v1/country-generation/'},
+  {label: 'Generation Forecast', value: '/api/v1/country-forecast/'},
 ];
 
 
@@ -26,7 +26,7 @@ export default class Filters extends Component{
     this.state = {
       hasData: false,
       countryOptions: [],
-      selectedEndpoints: [endpointOptions[0]],
+      selectedEndpoints: [],
       selectedCountries: [],
       dateFrom: undefined,
       dateTo: undefined,
@@ -43,8 +43,8 @@ export default class Filters extends Component{
     ).catch(err => {throw err})
   }
 
-  handleEndpointSelect(selectedOptions) {
-    this.setState({selectedEndpoints: selectedOptions? selectedOptions : []});
+  handleEndpointSelect(selectedOption) {
+    this.setState({selectedEndpoints: selectedOption ? selectedOption : []});
   }
 
   handleCountrySelect(selectedOptions) {
@@ -68,7 +68,7 @@ export default class Filters extends Component{
   }
 
   handleSubmit(event) {
-    if (!this.state.selectedEndpoints || !this.state.selectedEndpoints.length){
+    if (!this.state.selectedEndpoints){
       console.log('Empty');
     } else if (!this.state.selectedCountries || !this.state.selectedCountries.length) {
        console.log('Empty');
@@ -97,8 +97,9 @@ export default class Filters extends Component{
       <div>
         <h3>Available Filters</h3>
         <form onSubmit={this.handleSubmit}>
+          <h2>Select Data</h2>
           <label>
-            Available Info
+            Dataset
             <EndpointFilters
               endpointOptions={endpointOptions}
               selectedEndpoints={selectedEndpoints}
@@ -108,7 +109,7 @@ export default class Filters extends Component{
           </label>
           <br/>
           <label>
-            Available Countries
+            Countries
             <CountryFilters
               countryOptions={this.state.countryOptions}
               selectedCountries={selectedCountries}
@@ -132,7 +133,7 @@ export default class Filters extends Component{
             />
           </label>
           <br/>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="SHOW" />
         </form>
       </div>
     )
