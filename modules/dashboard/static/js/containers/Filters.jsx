@@ -97,7 +97,7 @@ export default class Filters extends Component{
       <div>
         <h3>Available Filters</h3>
         <form onSubmit={this.handleSubmit}>
-          <h2>Select Data</h2>
+          <h4>Select Data</h4>
           <label>
             Dataset
             <EndpointFilters
