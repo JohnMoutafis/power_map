@@ -95,7 +95,7 @@ export default class Dashboard extends Component{
     let graphToRender = this.graphRenderingOption();
     return (
       <div className={'dashboard'}>
-        <div className={'header'}>Power Map</div>
+        <div className={'header'}><h3>Power Map</h3></div>
         <div className={'filters'}>
           <Filters handleSubmit={this.handleSubmit}/>
         </div>

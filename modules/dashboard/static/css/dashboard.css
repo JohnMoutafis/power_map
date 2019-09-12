@@ -4,9 +4,10 @@
 .central-map {grid-area: central-map;}
 
 .dashboard {
+  font-family: 'PT Sans', sans-serif;
   display: grid;
   grid-template-columns: 24vw 50vw 24vw;
-  grid-template-rows: 3vh 95vh;
+  grid-template-rows: 5vh 92vh;
   grid-template-areas:
     'header header header'
     'filters central-map graphs';
@@ -14,4 +15,14 @@
 
 .dashboard > div {
   text-align: center;
+}
+
+.ReactTable .rt-tbody {
+  overflow: initial;
+  overflow-x: hidden!important;
+}
+
+.available-info-container{
+  height: 40vh;
+  width: 24vw;
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AvailableInfo from '../components/Filters/AvailableInfo';
 import EndpointFilters from '../components/Filters/EndpointFilter';
 import CountryFilters from '../components/Filters/CountryFilters';
 import DateRangePicker from '../components/Filters/DatePickerFilters';
@@ -26,6 +27,7 @@ export default class Filters extends Component{
     this.state = {
       hasData: false,
       countryOptions: [],
+      availableInfo: [],
       selectedEndpoints: [],
       selectedCountries: [],
       dateFrom: undefined,
@@ -40,6 +42,14 @@ export default class Filters extends Component{
       results => {return results.json();}
     ).then(
       data => this.setState({hasData: true, countryOptions: data})
+    ).catch(err => {throw err})
+  }
+
+  fetchAvailableInfo() {
+    fetch('/api/v1/countries/available-info').then(
+      results => {return results.json();}
+    ).then(
+      data => this.setState({availableInfo: data})
     ).catch(err => {throw err})
   }
 
@@ -87,6 +97,7 @@ export default class Filters extends Component{
 
   componentDidMount() {
     this.fetchCountries();
+    this.fetchAvailableInfo();
   }
 
   render() {
@@ -95,46 +106,55 @@ export default class Filters extends Component{
 
     return (
       <div>
-        <h3>Available Filters</h3>
-        <form onSubmit={this.handleSubmit}>
-          <h4>Select Data</h4>
-          <label>
-            Dataset
-            <EndpointFilters
-              endpointOptions={endpointOptions}
-              selectedEndpoints={selectedEndpoints}
-              defaultValue={endpointOptions[0]}
-              handleChange={this.handleEndpointSelect}
-            />
-          </label>
-          <br/>
-          <label>
-            Countries
-            <CountryFilters
-              countryOptions={this.state.countryOptions}
-              selectedCountries={selectedCountries}
-              handleChange={this.handleCountrySelect}
-            />
-          </label>
-          <br/>
-          <label>
-            Date Range
-            <DateRangePicker
-              handleDatePickerFromChange={this.handleDatePickerFromChange}
-              handleDatePickerToChange={this.handleDatePickerToChange}
-            />
-          </label>
-          <br/>
-          <label>
-            Time Range
-            <TimeRangePicker
-              handleTimePickerStartChange={this.handleTimePickerStartChange}
-              handleTimePickerEndChange={this.handleTimePickerEndChange}
-            />
-          </label>
-          <br/>
-          <input type="submit" value="SHOW" />
-        </form>
+        <div>
+          <h3>Available Filters</h3>
+          <form onSubmit={this.handleSubmit}>
+            <h4>Select Data</h4>
+            <label>
+              Dataset
+              <EndpointFilters
+                endpointOptions={endpointOptions}
+                selectedEndpoints={selectedEndpoints}
+                defaultValue={endpointOptions[0]}
+                handleChange={this.handleEndpointSelect}
+              />
+            </label>
+            <br/>
+            <label>
+              Countries
+              <CountryFilters
+                countryOptions={this.state.countryOptions}
+                selectedCountries={selectedCountries}
+                handleChange={this.handleCountrySelect}
+              />
+            </label>
+            <br/>
+            <label>
+              Date Range
+              <DateRangePicker
+                handleDatePickerFromChange={this.handleDatePickerFromChange}
+                handleDatePickerToChange={this.handleDatePickerToChange}
+              />
+            </label>
+            <br/>
+            <label>
+              Time Range
+              <TimeRangePicker
+                handleTimePickerStartChange={this.handleTimePickerStartChange}
+                handleTimePickerEndChange={this.handleTimePickerEndChange}
+              />
+            </label>
+            <br/>
+            <input type="submit" value="SHOW" />
+          </form>
+        </div>
+        <hr/>
+        <div className={'available-info-container'}>
+          <h4>Available Data</h4>
+          <AvailableInfo
+            availableInfo={this.state.availableInfo}
+          />
+        </div>
       </div>
     )
   }
