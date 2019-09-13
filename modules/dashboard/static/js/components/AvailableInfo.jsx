@@ -11,19 +11,21 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
   root: {
-    height: '100%',
+    height: '20%',
     width: '100%',
   },
   paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
     width: '100%',
-    height: '25vh',
+    height: '22vh',
     overflowX: 'auto'
   },
   table: {
     minWidth: 650,
   },
+  title: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  }
 });
 
 
@@ -34,7 +36,7 @@ class AvailableInfo extends Component{
     const {classes} = this.props;
     return(
       <div className={classes.root}>
-        <Typography variant='h5' align='center'>Available Data</Typography>
+        <Typography variant='h5' align='center' className={classes.title}>Available Data</Typography>
         <Paper className={classes.paper}>
           <Table className={classes.table} size='small' stickyHeader>
             <TableHead>

@@ -4,16 +4,17 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 
 
-const styles = {
+const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: '99%',
-    height: '99%',
+    width: '99vw',
+    height: '99vh',
+    marginLeft: theme.spacing(1),
   },
   title: {
-    // flexGrow: 1,
+    flexGrow: 1,
   },
-};
+});
 
 
 class App extends Component{
