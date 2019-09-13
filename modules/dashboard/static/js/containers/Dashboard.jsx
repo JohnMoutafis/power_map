@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
+import AvailableInfo from "../components/AvailableInfo";
 import CentralMap from '../components/CentralMap';
 import Filters from './Filters';
 import GraphModal from './GraphModal';
 import GraphStorageArea from './GraphStorageArea';
-import '../../css/dashboard.css';
+import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
+// import '../../css/dashboard.css'
 
 
-export default class Dashboard extends Component{
+const styles = {
+  root: {
+    flexGrow: 1,
+    paddingTop: 2,
+    paddingLeft: 2,
+  },
+};
+
+
+class Dashboard extends Component{
   constructor(props) {
     super(props);
     this.cleanFetchedData = this.cleanFetchedData.bind(this);
@@ -16,6 +28,7 @@ export default class Dashboard extends Component{
     this.handleSaveGraph = this.handleSaveGraph.bind(this);
     this.state = {
       fetchedEndpoint: '',
+      availableInfo: [],
       endpointsData: [],
       savedGraphs: [],
     };
@@ -26,6 +39,14 @@ export default class Dashboard extends Component{
       fetchedEndpoint: '',
       endpointsData: []
     })
+  }
+
+  fetchAvailableInfo() {
+    fetch('/api/v1/countries/available-info').then(
+      results => {return results.json();}
+    ).then(
+      data => this.setState({availableInfo: data})
+    ).catch(err => {throw err})
   }
 
   fetchFromEndpoint(endpoint) {
@@ -91,26 +112,39 @@ export default class Dashboard extends Component{
     this.setState({savedGraphs: savedGraphs});
   }
 
+  componentDidMount() {
+    this.fetchAvailableInfo();
+  }
+
   render() {
+    const {classes} = this.props;
     let graphToRender = this.graphRenderingOption();
     return (
-      <div className={'dashboard'}>
-        <div className={'header'}><h3>Power Map</h3></div>
-        <div className={'filters'}>
-          <Filters handleSubmit={this.handleSubmit}/>
-        </div>
-        <div className={'central-map'}>
-          <CentralMap />
-          <GraphModal
-            renderOption={graphToRender}
-            displayData={this.state.endpointsData}
-            handleSaveGraph={this.handleSaveGraph}
-          />
-        </div>
-        <div className={'graphs'}>
-          <GraphStorageArea savedGraphs={this.state.savedGraphs}/>
-        </div>
+      <div className={classes.root}>
+        <Grid container spacing={1} >
+          <Grid container item xs={8} spacing={1}>
+            <Grid item xs={4}>
+                <Filters handleSubmit={this.handleSubmit}/>
+            </Grid>
+            <Grid item xs={8}>
+              <CentralMap />
+              {/*<GraphModal*/}
+              {/*  renderOption={graphToRender}*/}
+              {/*  displayData={this.state.endpointsData}*/}
+              {/*  handleSaveGraph={this.handleSaveGraph}*/}
+              {/*/>*/}
+            </Grid>
+            <Grid item xs={12}>
+              <AvailableInfo availableInfo={this.state.availableInfo} />
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <GraphStorageArea savedGraphs={this.state.savedGraphs}/>
+          </Grid>
+        </Grid>
       </div>
     )
   }
 }
+
+export default withStyles(styles)(Dashboard);

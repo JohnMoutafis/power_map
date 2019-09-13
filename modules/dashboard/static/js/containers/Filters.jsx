@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AvailableInfo from '../components/Filters/AvailableInfo';
 import EndpointFilters from '../components/Filters/EndpointFilter';
 import CountryFilters from '../components/Filters/CountryFilters';
 import DateRangePicker from '../components/Filters/DatePickerFilters';
@@ -27,7 +26,6 @@ export default class Filters extends Component{
     this.state = {
       hasData: false,
       countryOptions: [],
-      availableInfo: [],
       selectedEndpoints: [],
       selectedCountries: [],
       dateFrom: undefined,
@@ -42,14 +40,6 @@ export default class Filters extends Component{
       results => {return results.json();}
     ).then(
       data => this.setState({hasData: true, countryOptions: data})
-    ).catch(err => {throw err})
-  }
-
-  fetchAvailableInfo() {
-    fetch('/api/v1/countries/available-info').then(
-      results => {return results.json();}
-    ).then(
-      data => this.setState({availableInfo: data})
     ).catch(err => {throw err})
   }
 
@@ -97,7 +87,6 @@ export default class Filters extends Component{
 
   componentDidMount() {
     this.fetchCountries();
-    this.fetchAvailableInfo();
   }
 
   render() {
@@ -147,13 +136,6 @@ export default class Filters extends Component{
             <br/>
             <input type="submit" value="SHOW" />
           </form>
-        </div>
-        <hr/>
-        <div className={'available-info-container'}>
-          <h4>Available Data</h4>
-          <AvailableInfo
-            availableInfo={this.state.availableInfo}
-          />
         </div>
       </div>
     )
