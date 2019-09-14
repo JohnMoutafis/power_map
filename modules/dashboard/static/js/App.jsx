@@ -25,7 +25,7 @@ class App extends Component{
         <AppBar position='static'>
           <div><h3>Power Map</h3></div>
         </AppBar>
-        <Dashboard />;
+        <Dashboard />
       </div>
     )
   }

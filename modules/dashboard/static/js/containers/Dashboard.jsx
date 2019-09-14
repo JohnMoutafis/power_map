@@ -124,7 +124,7 @@ class Dashboard extends Component{
         <Grid container spacing={1} >
           <Grid container item xs={8} spacing={1}>
             <Grid item xs={4}>
-                <Filters handleSubmit={this.handleSubmit}/>
+              <Filters handleSubmit={this.handleSubmit}/>
             </Grid>
             <Grid item xs={8}>
               <CentralMap />

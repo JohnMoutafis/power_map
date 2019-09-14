@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
+import DateFnsUtils from "@date-io/date-fns";
+import Grid from "@material-ui/core/Grid";
+import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
 
 const returnDateFormat = 'YYYY-MM-DD';
 
@@ -32,40 +34,35 @@ export default class DateRangePicker extends Component{
 
   render() {
     const {from, to} = this.state;
-    const format = 'MMMM d, yyyy';
+    const format = 'MMM d, yyyy';
 
     return(
-      <div>
-        <DatePicker
-          placeholderText='From'
-          dateFormat={format}
-          selectsStart
-          showYearDropdown
-          showMonthDropdown
-          dropdownMode='select'
-          selected={from}
-          startDate={from}
-          endDate={to}
-          onChange={this.handleFromChange}
-          todayButton={'Today'}
-          isClearable={true}
-        />
-        <DatePicker
-          placeholderText='To'
-          dateFormat={format}
-          selectsEnd
-          showYearDropdown
-          showMonthDropdown
-          dropdownMode='select'
-          selected={to}
-          startDate={from}
-          endDate={to}
-          minDate={from}
-          onChange={this.handleToChange}
-          todayButton={'Today'}
-          isClearable={true}
-        />
-      </div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Grid container justify="space-around">
+          <Grid item xs={6}>
+            <DatePicker
+              margin='normal'
+              variant='inline'
+              label='from'
+              disableFuture
+              format={format}
+              value={from}
+              onChange={this.handleFromChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <DatePicker
+              margin='normal'
+              variant='inline'
+              label='until'
+              disableFuture
+              format={format}
+              value={to}
+              onChange={this.handleToChange}
+            />
+          </Grid>
+        </Grid>
+      </MuiPickersUtilsProvider>
     )
   }
 }
