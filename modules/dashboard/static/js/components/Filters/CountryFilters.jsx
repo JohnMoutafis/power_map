@@ -1,22 +1,80 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated/dist/react-select.esm';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Chip from '@material-ui/core/Chip';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 
-const animatedComponents = makeAnimated();
+const styles = theme => ({
+  formControl: {
+    flexGrow: 1,
+    width: '100%'
+  },
+  inputLabel: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2)
+  },
+  select: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+});
 
 
-export default class CountryFilters extends Component{
+class CountryFilters extends Component{
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      selected: [],
+    };
+  }
+
+  handleChange(event){
+    this.setState({selected: event.target.value});
+    this.props.handleChange(event.target.value);
+  }
+
   render() {
+    const {classes} = this.props;
     return (
-      <Select
-        value={this.props.selectedCountries}
-        onChange={this.props.handleChange}
-        options={this.props.countryOptions}
-        closeMenuOnSelect={false}
-        components={animatedComponents}
-        isMulti
-      />
+      <FormControl className={classes.formControl} variant='filled'>
+        <InputLabel className={classes.inputLabel} htmlFor='country-pick'>Countries</InputLabel>
+          <Select
+            multiple
+            className={classes.select}
+            value={this.state.selected}
+            onChange={this.handleChange}
+            inputProps={{
+              id: 'country-pick',
+              name: 'country',
+            }}
+            renderValue={selected => (
+              <div className={classes.chips}>
+                {selected.map(value => (
+                  <Chip key={value} label={value} className={classes.chip} />
+                ))}
+              </div>
+            )}
+          >
+            {this.props.countryOptions.map((country, index) => (
+              <MenuItem key={index} value={country.label}>
+                {country.label}
+              </MenuItem>
+            ))}
+          </Select>
+      </FormControl>
     )
   }
 }
+
+export default withStyles(styles)(CountryFilters);

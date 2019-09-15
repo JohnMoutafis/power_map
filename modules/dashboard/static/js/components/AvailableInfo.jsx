@@ -17,6 +17,7 @@ const styles = theme => ({
   paper: {
     width: '100%',
     height: '22vh',
+    maxHeight: '22vh',
     overflowX: 'auto'
   },
   table: {

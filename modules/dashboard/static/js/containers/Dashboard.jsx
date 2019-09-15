@@ -6,7 +6,6 @@ import GraphModal from './GraphModal';
 import GraphStorageArea from './GraphStorageArea';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-// import '../../css/dashboard.css'
 
 
 const styles = {
@@ -123,7 +122,7 @@ class Dashboard extends Component{
       <div className={classes.root}>
         <Grid container spacing={1} >
           <Grid container item xs={8} spacing={1}>
-            <Grid item xs={4}>
+            <Grid item  xs={4}>
               <Filters handleSubmit={this.handleSubmit}/>
             </Grid>
             <Grid item xs={8}>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import DateFnsUtils from "@date-io/date-fns";
-import Grid from "@material-ui/core/Grid";
-import {MuiPickersUtilsProvider, DatePicker} from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
+import {MuiPickersUtilsProvider, DatePicker} from '@material-ui/pickers';
 
 const returnDateFormat = 'YYYY-MM-DD';
 
@@ -13,8 +13,8 @@ export default class DateRangePicker extends Component{
     this.handleFromChange = this.handleFromChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
     this.state = {
-      from: undefined,
-      to: undefined
+      from: null,
+      to: null
     }
   }
 

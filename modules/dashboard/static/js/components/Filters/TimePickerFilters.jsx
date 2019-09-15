@@ -4,7 +4,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
 import {MuiPickersUtilsProvider, TimePicker} from "@material-ui/pickers";
 
-const timeFormat = 'HH:mm';
+const timeFormat = 'HH:00';
 
 
 export default class TimeRangePicker extends Component{
@@ -13,8 +13,8 @@ export default class TimeRangePicker extends Component{
     this.handleStartChange = this.handleStartChange.bind(this);
     this.handleEndChange = this.handleEndChange.bind(this);
     this.state = {
-      start: undefined,
-      end: undefined
+      start: null,
+      end: null
     }
   }
 
@@ -50,6 +50,7 @@ export default class TimeRangePicker extends Component{
           </Grid>
           <Grid item xs={6}>
             <TimePicker
+              ampm={false}
               variant="inline"
               label={'until'}
               openTo="hours"
