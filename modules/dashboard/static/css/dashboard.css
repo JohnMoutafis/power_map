@@ -1,20 +1,11 @@
-.graphs {grid-area: graphs}
-.header {grid-area: header;}
-.filters {grid-area: filters;}
-.central-map {grid-area: central-map;}
-
 .dashboard {
-  font-family: 'PT Sans', sans-serif;
-  display: grid;
-  grid-template-columns: 24vw 50vw 24vw;
-  grid-template-rows: 5vh 92vh;
-  grid-template-areas:
-    'header header header'
-    'filters central-map graphs';
+  width: 100vw;
+  height: 100px;
 }
 
-.dashboard > div {
-  text-align: center;
+html, body, #root, #root>div {
+  width:100% !important;
+  height: 100% !important;
 }
 
 .ReactTable .rt-tbody {

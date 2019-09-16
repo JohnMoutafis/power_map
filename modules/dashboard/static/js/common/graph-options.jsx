@@ -16,16 +16,13 @@ export const simpleGraphOptions = function (countries, series) {
     chart: {
       type: 'column',
       height: '47%',
-      panning: true,
     },
     title: {
-      text: 'Capacity per Country'
+      text: 'Generation Capacity of ' + countries.join(', ')
     },
     colors: productionColors,
     xAxis: {
       categories: countries,
-      min: 0,
-      max: 9,
     },
     yAxis: {
       title: {
@@ -87,7 +84,7 @@ export const timeseriesGraphOptions = function (title, categories, series) {
       panning: true
     },
     title: {
-      text: title + ' per Country'
+      text: title + ' of ' + categories.map(category => (category.name)).join(', ')
     },
     colors: graphColors,
     xAxis: {
