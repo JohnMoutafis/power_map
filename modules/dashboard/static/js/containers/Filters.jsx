@@ -35,7 +35,7 @@ const styles = theme => ({
     marginTop: theme.spacing(2),
   },
   span: {
-    color: theme.palette.secondary
+    color: theme.palette.text.secondary
   },
   button: {
     width: '93%',
@@ -151,18 +151,14 @@ class Filters extends Component{
                 handleDatePickerFromChange={this.handleDatePickerFromChange}
                 handleDatePickerToChange={this.handleDatePickerToChange}
               />
-              <Typography variant='subtitle2' align='center' className={classes.span}>
-                Date Constraints
-              </Typography>
+              <Typography variant='subtitle2' align='center'>Date Constraints</Typography>
             </Box>
             <Box className={classes.box}>
               <TimeRangePicker
                 handleTimePickerStartChange={this.handleTimePickerStartChange}
                 handleTimePickerEndChange={this.handleTimePickerEndChange}
               />
-              <Typography variant='subtitle2' align='center' className={classes.span}>
-                Time Constraints
-              </Typography>
+              <Typography variant='subtitle2' align='center'>Time Constraints</Typography>
             </Box>
           </Box>
           <Button

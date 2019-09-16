@@ -6,7 +6,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import '../../css/central-map.css';
 
 
-const styles = {
+const styles = themes => ({
   root: {
     height: '75%',
     width: '100%'
@@ -14,8 +14,9 @@ const styles = {
   paper: {
     width: '100%',
     height: '61vh',
+    marginTop: themes.spacing(1)
   },
-};
+});
 
 
 class CentralMap extends Component{

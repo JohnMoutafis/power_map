@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
-import AvailableInfo from "../components/AvailableInfo";
+import AvailableInfo from '../components/AvailableInfo';
 import CentralMap from '../components/CentralMap';
 import Filters from './Filters';
 import GraphModal from './GraphModal';
 import GraphStorageArea from './GraphStorageArea';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 
-const styles = {
+const styles = themes => ({
   root: {
     flexGrow: 1,
     paddingTop: 2,
     paddingLeft: 2,
   },
-};
+  paper: {
+    width: '100%',
+    height: '94vh',
+    marginTop: themes.spacing(1)
+  },
+});
 
 
 class Dashboard extends Component{
@@ -120,27 +126,29 @@ class Dashboard extends Component{
     let graphToRender = this.graphRenderingOption();
     return (
       <div className={classes.root}>
-        <Grid container spacing={1} >
-          <Grid container item xs={8} spacing={1}>
-            <Grid item  xs={4}>
-              <Filters handleSubmit={this.handleSubmit}/>
+        <Paper className={classes.paper}>
+          <Grid container spacing={1} >
+            <Grid container item xs={8} spacing={1}>
+              <Grid item  xs={4}>
+                <Filters handleSubmit={this.handleSubmit}/>
+              </Grid>
+              <Grid item xs={8}>
+                <CentralMap />
+              </Grid>
+              <Grid item xs={12}>
+                <AvailableInfo availableInfo={this.state.availableInfo} />
+              </Grid>
             </Grid>
-            <Grid item xs={8}>
-              <CentralMap />
-              {/*<GraphModal*/}
-              {/*  renderOption={graphToRender}*/}
-              {/*  displayData={this.state.endpointsData}*/}
-              {/*  handleSaveGraph={this.handleSaveGraph}*/}
-              {/*/>*/}
-            </Grid>
-            <Grid item xs={12}>
-              <AvailableInfo availableInfo={this.state.availableInfo} />
+            <Grid item xs={4}>
+              <GraphStorageArea savedGraphs={this.state.savedGraphs}/>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <GraphStorageArea savedGraphs={this.state.savedGraphs}/>
-          </Grid>
-        </Grid>
+          <GraphModal
+            renderOption={graphToRender}
+            displayData={this.state.endpointsData}
+            handleSaveGraph={this.handleSaveGraph}
+          />
+        </Paper>
       </div>
     )
   }

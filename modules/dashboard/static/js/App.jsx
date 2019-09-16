@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Dashboard from './containers/Dashboard'
-import withStyles from '@material-ui/core/styles/withStyles';
 import AppBar from '@material-ui/core/AppBar/AppBar';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 
 const styles = theme => ({
@@ -23,7 +24,7 @@ class App extends Component{
     return (
       <div className={classes.root} style={{height: 100}}>
         <AppBar position='static'>
-          <div><h3>Power Map</h3></div>
+          <Typography variant='h3' align='center' className={classes.title}>Interactive Power Data Map</Typography>
         </AppBar>
         <Dashboard />
       </div>

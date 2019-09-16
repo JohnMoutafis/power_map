@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 import GraphComponent from '../components/Graphs/GraphComponent';
 import {simpleGraphOptions, timeseriesGraphOptions} from '../common/graph-options';
 import {createCapacityDataLists, createForecastDataList, createGenerationDataLists} from '../common/utils';
-import '../../css/graph-modal.css';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 
-export default class GraphModal extends Component {
+const styles = {
+  dialogPaper: {
+    minWidth: '90vw',
+    maxWidth: '90vw',
+    minHeight: '95vh',
+    maxHeight: '95vh'
+  },
+  graphContainer: {
+    height: '75vh',
+    width: '87vw'
+  }
+};
+
+class GraphModal extends Component {
   constructor(props) {
     super(props);
     this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onSave = this.onSave.bind(this);
     this.state = {
@@ -20,8 +36,6 @@ export default class GraphModal extends Component {
   }
 
   openModal() { this.setState({modalIsOpen: true}); }
-
-  afterOpenModal() {}
 
   closeModal() { this.setState({modalIsOpen: false}); }
 
@@ -37,7 +51,7 @@ export default class GraphModal extends Component {
           graphOptions = {...simpleGraphOptions(categories, series)};
         } else if (nextProps.renderOption === 'Actual Generation'){
           const {categories, series} = createGenerationDataLists(nextProps.displayData[0]);
-          graphOptions = {...timeseriesGraphOptions('Generation', categories, series)}
+          graphOptions = {...timeseriesGraphOptions('Actual Generation', categories, series)}
         } else if (nextProps.renderOption === 'Generation Forecast'){
           const {categories, series} = createForecastDataList(nextProps.displayData[0]);
           graphOptions = {...timeseriesGraphOptions('Generation Forecast', categories, series)}
@@ -45,31 +59,35 @@ export default class GraphModal extends Component {
         graph = <GraphComponent graphOptions={graphOptions}/>;
       }
       this.setState({graph: graph})
+      this.openModal();
     }
-    this.openModal();
   }
 
   onSave(){ this.props.handleSaveGraph(this.state.graph); }
 
   render() {
+    const {classes} = this.props;
     return (
-      <div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          ariaHideApp={false}
-          contentLabel='Query Graph Representation'
-        >
-          <div>
-            <button onClick={this.onSave}>Keep</button>
-            <button onClick={this.closeModal}>Close</button>
-          </div>
-          <div className='graphContainer'>
+      <Dialog
+        aria-labelledby='dialog-title'
+        open={this.state.modalIsOpen}
+        onClose={this.closeModal}
+        classes={{paper: classes.dialogPaper}}
+      >
+        <DialogTitle id='dialog-title' align='center'>Graph Display</DialogTitle>
+        <DialogContent dividers>
+          <div className={classes.graphContainer}>
             {this.state.graph}
           </div>
-        </Modal>
-      </div>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={this.onSave} variant='contained' color='primary'>Keep</Button>
+            <Button onClick={this.closeModal} variant='contained' color='secondary'>Close</Button>
+        </DialogActions>
+      </Dialog>
     )
   }
 }
+
+
+export default withStyles(styles)(GraphModal);
