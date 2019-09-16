@@ -18,14 +18,13 @@ export const simpleGraphOptions = function (countries, series) {
       height: '47%',
     },
     title: {
-      text: 'Capacity per Country'
+      text: 'Generation Capacity of ' + countries.join(', ')
     },
     colors: productionColors,
     xAxis: {
-      categories: countries
+      categories: countries,
     },
     yAxis: {
-      min: 0,
       title: {
         text: 'Capacity in KWh'
       },
@@ -38,10 +37,11 @@ export const simpleGraphOptions = function (countries, series) {
       }
     },
     legend: {
+      y:25,
       layout: 'vertical',
       align: 'right',
-      verticalAlign: 'top',
-      floating: true,
+      verticalAlign: 'middle',
+      floating: false,
       backgroundColor: 'white',
       borderColor: '#CCC',
       borderWidth: 1,
@@ -80,14 +80,17 @@ export const timeseriesGraphOptions = function (title, categories, series) {
   return {
     chart: {
       type: 'column',
-      height: '47%'
+      height: '47%',
+      panning: true
     },
     title: {
-      text: title + ' per Country'
+      text: title + ' of ' + categories.map(category => (category.name)).join(', ')
     },
     colors: graphColors,
     xAxis: {
-      categories: categories,
+      min: 0,
+      max: 14,
+      categories: categories
     },
     yAxis: {
       min: 0,
@@ -104,9 +107,10 @@ export const timeseriesGraphOptions = function (title, categories, series) {
     },
     legend: {
       y: 25,
+      layout: 'vertical',
       align: 'right',
-      verticalAlign: 'top',
-      floating: true,
+      verticalAlign: 'middle',
+      floating: false,
       backgroundColor: 'white',
       borderColor: '#CCC',
       borderWidth: 1,
@@ -123,7 +127,7 @@ export const timeseriesGraphOptions = function (title, categories, series) {
         dataLabels: {
           enabled: true,
           color: 'white'
-        }
+        },
       }
     },
     responsive: {

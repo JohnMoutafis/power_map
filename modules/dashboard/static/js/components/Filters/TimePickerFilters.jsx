@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
+import DateFnsUtils from "@date-io/date-fns";
+import Grid from "@material-ui/core/Grid";
+import {MuiPickersUtilsProvider, TimePicker} from "@material-ui/pickers";
 
-const timeFormat = 'HH:mm';
+const timeFormat = 'HH:00';
 
 
 export default class TimeRangePicker extends Component{
@@ -11,8 +13,8 @@ export default class TimeRangePicker extends Component{
     this.handleStartChange = this.handleStartChange.bind(this);
     this.handleEndChange = this.handleEndChange.bind(this);
     this.state = {
-      start: undefined,
-      end: undefined
+      start: null,
+      end: null
     }
   }
 
@@ -32,32 +34,34 @@ export default class TimeRangePicker extends Component{
 
   render() {
     return (
-      <div>
-        <DatePicker
-          placeholderText='Time Start'
-          selected={this.state.start}
-          onChange={this.handleStartChange}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={60}
-          timeFormat={timeFormat}
-          dateFormat={timeFormat}
-          isClearable={true}
-          keepFocus={false}
-        />
-        <DatePicker
-          placeholderText='Time End'
-          selected={this.state.end}
-          onChange={this.handleEndChange}
-          showTimeSelect
-          showTimeSelectOnly
-          timeIntervals={60}
-          timeFormat={timeFormat}
-          dateFormat={timeFormat}
-          isClearable={true}
-          keepFocus={false}
-        />
-      </div>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Grid container justify="space-around">
+          <Grid item xs={6}>
+            <TimePicker
+              ampm={false}
+              variant="inline"
+              label={'from'}
+              openTo="hours"
+              views={["hours"]}
+              value={this.state.start}
+              onChange={this.handleStartChange}
+              format={timeFormat}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TimePicker
+              ampm={false}
+              variant="inline"
+              label={'until'}
+              openTo="hours"
+              views={["hours"]}
+              value={this.state.end}
+              onChange={this.handleEndChange}
+              format={timeFormat}
+            />
+          </Grid>
+        </Grid>
+      </MuiPickersUtilsProvider>
     )
   }
 }

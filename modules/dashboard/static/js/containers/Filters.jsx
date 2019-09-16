@@ -3,17 +3,49 @@ import EndpointFilters from '../components/Filters/EndpointFilter';
 import CountryFilters from '../components/Filters/CountryFilters';
 import DateRangePicker from '../components/Filters/DatePickerFilters';
 import TimeRangePicker from '../components/Filters/TimePickerFilters';
-import 'react-datepicker/dist/react-datepicker.css';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 
 const endpointOptions = [
-  {label: 'capacity', value: '/api/v1/country-capacity/'},
-  {label: 'generation', value: '/api/v1/country-generation/'},
-  {label: 'generation forecast', value: '/api/v1/country-forecast/'},
+  {label: 'Generation Capacity', value: '/api/v1/country-capacity/'},
+  {label: 'Actual Generation', value: '/api/v1/country-generation/'},
+  {label: 'Generation Forecast', value: '/api/v1/country-forecast/'},
 ];
 
 
-export default class Filters extends Component{
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    height: '61vh',
+    maxHeight: '61vh'
+  },
+  container: {
+    width: '100%',
+    height: '51vh',
+    maxHeight: '51vh',
+    overflow: 'auto'
+  },
+  title: {
+    marginTop: theme.spacing(1),
+  },
+  box: {
+    marginTop: theme.spacing(2),
+  },
+  span: {
+    color: theme.palette.text.secondary
+  },
+  button: {
+    width: '93%',
+    margin: theme.spacing(1),
+    marginTop: theme.spacing(2)
+  }
+});
+
+
+class Filters extends Component{
   constructor(props) {
     super(props);
     this.handleEndpointSelect = this.handleEndpointSelect.bind(this);
@@ -26,7 +58,7 @@ export default class Filters extends Component{
     this.state = {
       hasData: false,
       countryOptions: [],
-      selectedEndpoints: [endpointOptions[0]],
+      selectedEndpoints: [],
       selectedCountries: [],
       dateFrom: undefined,
       dateTo: undefined,
@@ -43,12 +75,16 @@ export default class Filters extends Component{
     ).catch(err => {throw err})
   }
 
-  handleEndpointSelect(selectedOptions) {
-    this.setState({selectedEndpoints: selectedOptions? selectedOptions : []});
+  handleEndpointSelect(selectedOption) {
+    this.setState({selectedEndpoints: selectedOption ? selectedOption : []});
   }
 
   handleCountrySelect(selectedOptions) {
-    this.setState({selectedCountries: selectedOptions? selectedOptions : []});
+    this.setState({
+      selectedCountries: this.state.countryOptions.filter(country => (
+        selectedOptions.includes(country.label)
+      ))
+    });
   }
 
   handleDatePickerFromChange(from) {
@@ -68,7 +104,7 @@ export default class Filters extends Component{
   }
 
   handleSubmit(event) {
-    if (!this.state.selectedEndpoints || !this.state.selectedEndpoints.length){
+    if (!this.state.selectedEndpoints){
       console.log('Empty');
     } else if (!this.state.selectedCountries || !this.state.selectedCountries.length) {
        console.log('Empty');
@@ -90,51 +126,52 @@ export default class Filters extends Component{
   }
 
   render() {
-    const { selectedEndpoints } = this.state.selectedEndpoints;
-    const { selectedCountries } = this.state.selectedCountries;
-
+    const {classes} = this.props;
     return (
-      <div>
-        <h3>Available Filters</h3>
+      <div className={classes.root}>
+        <Typography variant='h5' align='center' className={classes.title}>Available Filters</Typography>
         <form onSubmit={this.handleSubmit}>
-          <label>
-            Available Info
+          <Box className={classes.container}>
+            <Typography variant='h6' align='center' className={classes.title}>
+              Select Data <span className={classes.span}>(Required)</span>
+            </Typography>
             <EndpointFilters
               endpointOptions={endpointOptions}
-              selectedEndpoints={selectedEndpoints}
-              defaultValue={endpointOptions[0]}
               handleChange={this.handleEndpointSelect}
             />
-          </label>
-          <br/>
-          <label>
-            Available Countries
             <CountryFilters
               countryOptions={this.state.countryOptions}
-              selectedCountries={selectedCountries}
               handleChange={this.handleCountrySelect}
             />
-          </label>
-          <br/>
-          <label>
-            Date Range
-            <DateRangePicker
-              handleDatePickerFromChange={this.handleDatePickerFromChange}
-              handleDatePickerToChange={this.handleDatePickerToChange}
-            />
-          </label>
-          <br/>
-          <label>
-            Time Range
-            <TimeRangePicker
-              handleTimePickerStartChange={this.handleTimePickerStartChange}
-              handleTimePickerEndChange={this.handleTimePickerEndChange}
-            />
-          </label>
-          <br/>
-          <input type="submit" value="Submit" />
+            <Typography variant='h6' align='center' className={classes.title}>
+              Define Date/Time Constraints <span className={classes.span}>(Optional)</span>
+            </Typography>
+            <Box className={classes.box}>
+              <DateRangePicker
+                handleDatePickerFromChange={this.handleDatePickerFromChange}
+                handleDatePickerToChange={this.handleDatePickerToChange}
+              />
+              <Typography variant='subtitle2' align='center'>Date Constraints</Typography>
+            </Box>
+            <Box className={classes.box}>
+              <TimeRangePicker
+                handleTimePickerStartChange={this.handleTimePickerStartChange}
+                handleTimePickerEndChange={this.handleTimePickerEndChange}
+              />
+              <Typography variant='subtitle2' align='center'>Time Constraints</Typography>
+            </Box>
+          </Box>
+          <Button
+            className={classes.button}
+            type='submit' variant='contained'
+            color='primary' size='large'
+          >
+           Show
+          </Button>
         </form>
       </div>
     )
   }
 }
+
+export default withStyles(styles)(Filters);

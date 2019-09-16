@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+require('highcharts-grouped-categories')(Highcharts);
+require('highcharts/modules/exporting')(Highcharts);
+require('highcharts/modules/export-data')(Highcharts);
 
 export default class GraphComponent extends Component {
   constructor(props) {
