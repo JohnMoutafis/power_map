@@ -7,11 +7,13 @@ const INITIAL_STATE = {
 
 
 const selectCountry = function(state, action) {
-  let currSelected = state.selectedCountries;
-  currSelected.push(action.country);
+  state.selectedCountries.push(action.country);
+  console.log(state.selectedCountries);
+  const selected = state.selectedCountries.slice(0).sort();
+  console.log(selected);
   return {
     ...state,
-    selectCountries: currSelected.sort()
+    selectCountries: selected
   }
 };
 

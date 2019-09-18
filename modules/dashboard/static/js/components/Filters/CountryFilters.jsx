@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {countryDeselect, countrySelect} from '../../store/actions';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Chip from '@material-ui/core/Chip';
@@ -43,20 +45,13 @@ class CountryFilters extends Component{
     console.log('values ' + event.target.value);
     console.log('state ' + this.state.selected);
     this.setState({selected: event.target.value});
-    this.props.handleChange(event.target.value);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    let currSelected = this.state.selected;
-    if(nextProps.externalySelected !== ''){
-      if(this.state.selected.includes(nextProps.externalySelected)){
-        currSelected = currSelected.filter(country => country !== nextProps.externalySelected);
-      } else {
-        currSelected.push(nextProps.externalySelected);
-      }
-      this.setState({selected: currSelected.sort()})
-    }
-  }
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   if (nextProps.selectedCountries !== this.props.selectedCountries){
+  //     this.setState({selected: nextProps.selectedCountries})
+  //   }
+  // }
 
   render() {
     const {classes} = this.props;
@@ -66,7 +61,7 @@ class CountryFilters extends Component{
           <Select
             multiple
             className={classes.select}
-            value={this.state.selected}
+            value={this.props.selectedCountries}
             onChange={this.handleChange}
             inputProps={{
               id: 'country-pick',
@@ -91,4 +86,17 @@ class CountryFilters extends Component{
   }
 }
 
-export default withStyles(styles)(CountryFilters);
+
+const mapStateToProps = state => ({
+  selectedCountries: state.selectedCountries
+});
+
+const mapDispatchToProps = {
+  countrySelect,
+  countryDeselect
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CountryFilters));

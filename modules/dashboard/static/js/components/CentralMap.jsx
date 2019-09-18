@@ -136,12 +136,12 @@ const mapStateToProps = state => ({
   selectedCountries: state.selectedCountries
 });
 
-const madDispatchToProps = {
+const mapDispatchToProps = {
   countrySelect,
   countryDeselect
 };
 
 export default connect(
   mapStateToProps,
-  madDispatchToProps
+  mapDispatchToProps
 )(withStyles(styles)(CentralMap));

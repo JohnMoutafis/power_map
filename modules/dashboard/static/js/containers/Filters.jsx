@@ -147,7 +147,6 @@ class Filters extends Component{
             />
             <CountryFilters
               countryOptions={this.state.countryOptions}
-              externalySelected={this.props.selectedCountryFromMap}
               handleChange={this.handleCountrySelect}
             />
             <Typography variant='h6' align='center' className={classes.title}>
