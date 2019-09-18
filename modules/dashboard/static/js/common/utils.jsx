@@ -138,3 +138,12 @@ export function createForecastDataList(graphData) {
     series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key])
   }
 }
+
+
+export function mergeArrays(...arrays) {
+  let jointArray = [];
+  arrays.forEach(array => {
+    jointArray = [...jointArray, ...array]
+  });
+  return [...new Set([...jointArray])]
+}

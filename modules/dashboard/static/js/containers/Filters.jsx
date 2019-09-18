@@ -125,6 +125,12 @@ class Filters extends Component{
     this.fetchCountries();
   }
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if(nextProps.selectedCountriesFromMap !== this.props.selectedCountriesFromMap){
+      this.setState({selectedCountriesFromMap: nextProps.selectedCountriesFromMap})
+    }
+  }
+
   render() {
     const {classes} = this.props;
     return (
@@ -141,6 +147,7 @@ class Filters extends Component{
             />
             <CountryFilters
               countryOptions={this.state.countryOptions}
+              externalySelected={this.props.selectedCountryFromMap}
               handleChange={this.handleCountrySelect}
             />
             <Typography variant='h6' align='center' className={classes.title}>

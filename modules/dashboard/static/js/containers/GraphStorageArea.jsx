@@ -86,10 +86,11 @@ class GraphStorageArea extends Component {
                 id={index}
                 key={index}
                 className={classes.graphThumbnail}
-                onClick={this.handleClick}>
-                  {graph}
-                </Grid>
-              ))}
+                onClick={this.handleClick}
+              >
+                {graph}
+              </Grid>
+            ))}
           </Grid>
         </Box>
         <Dialog

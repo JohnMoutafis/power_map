@@ -40,8 +40,22 @@ class CountryFilters extends Component{
   }
 
   handleChange(event){
+    console.log('values ' + event.target.value);
+    console.log('state ' + this.state.selected);
     this.setState({selected: event.target.value});
     this.props.handleChange(event.target.value);
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    let currSelected = this.state.selected;
+    if(nextProps.externalySelected !== ''){
+      if(this.state.selected.includes(nextProps.externalySelected)){
+        currSelected = currSelected.filter(country => country !== nextProps.externalySelected);
+      } else {
+        currSelected.push(nextProps.externalySelected);
+      }
+      this.setState({selected: currSelected.sort()})
+    }
   }
 
   render() {
