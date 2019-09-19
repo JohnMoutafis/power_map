@@ -53,7 +53,7 @@ class GraphStorageArea extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      modalIdOpen: false,
+      modalIsOpen: false,
       displaySavedGraph: undefined
     }
   }

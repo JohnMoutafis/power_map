@@ -58,8 +58,10 @@ class GraphModal extends Component {
         }
         graph = <GraphComponent graphOptions={graphOptions}/>;
       }
-      this.setState({graph: graph})
-      this.openModal();
+      this.setState(
+        {graph: graph},
+        () => this.openModal()
+      );
     }
   }
 

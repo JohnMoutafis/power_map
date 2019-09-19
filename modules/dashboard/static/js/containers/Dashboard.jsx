@@ -17,7 +17,7 @@ const styles = themes => ({
   },
   paper: {
     width: '100%',
-    height: '94vh',
+    height: '92vh',
     marginTop: themes.spacing(1)
   },
 });
