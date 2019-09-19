@@ -5,6 +5,7 @@ import {countrySelect, countryDeselect} from '../store/actions';
 import {Map, GeoJSON, TileLayer, ZoomControl} from 'react-leaflet';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {addPropertyToFeatureCollection} from "../common/utils";
 
 
 const defaultStyle = {
@@ -49,6 +50,7 @@ class CentralMap extends Component{
   constructor(props) {
     super(props);
     this.handleOnEachFeature = this.handleOnEachFeature.bind(this);
+    this.style = this.style.bind(this);
     this.state = {
       hasData: false,
       borders: []
@@ -59,37 +61,52 @@ class CentralMap extends Component{
     fetch('/api/v1/countries/').then(
       results => {return results.json();}
     ).then(
-      data => this.setState({hasData: true, borders: data})
+      data => this.setState({hasData: true, borders: addPropertyToFeatureCollection(data)})
     ).catch(err => {throw err})
-  }
-
-  componentDidMount() {
-    this.fetchCountries();
   }
 
   handleOnEachFeature(feature, layer) {
     layer.on({
       'click': () => {
-        layer.options.clickedFlag = !layer.options.clickedFlag;
-        if(layer.options.clickedFlag){
+        if(!feature.properties.selected){
           this.props.countrySelect(feature.properties.name);
-          layer.setStyle(selectedStyle);
         } else {
           this.props.countryDeselect(feature.properties.name);
-          layer.setStyle(defaultStyle);
         }
       },
       'mouseover': function () {
-        if(!layer.options.clickedFlag){
+        if(!feature.properties.selected){
           layer.setStyle(mouseOverStyle);
         }
       },
       'mouseout': function () {
-        if(!layer.options.clickedFlag) {
+        if(!feature.properties.selected) {
           layer.setStyle(defaultStyle)
         }
       }
     });
+  }
+
+  style(feature) {
+    if (feature.properties.selected) {
+      return selectedStyle
+    } else {
+      return defaultStyle
+    }
+  }
+
+  componentWillMount() {
+    this.fetchCountries();
+  }
+
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if(nextProps.selectedCountries !== this.props.selectedCountries){
+      const updatedBorders = {...this.state.borders};
+      for(const feature of updatedBorders.features){
+        feature.properties.selected = nextProps.selectedCountries.includes(feature.properties.name);
+      }
+      this.setState({borders: updatedBorders});
+    }
   }
 
   render() {
@@ -116,8 +133,8 @@ class CentralMap extends Component{
             <Loader loaded={this.state.hasData} color='#07620A' scale={3.00}>
               <TileLayer url={'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png'} />
               <GeoJSON
-                data={this.state.borders} style={defaultStyle}
-                onEachFeature={this.handleOnEachFeature} clickedFlag={false}
+                data={this.state.borders} style={this.style}
+                onEachFeature={this.handleOnEachFeature}
               />
               <TileLayer
                 url={'http://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png'}

@@ -140,10 +140,16 @@ export function createForecastDataList(graphData) {
 }
 
 
-export function mergeArrays(...arrays) {
-  let jointArray = [];
-  arrays.forEach(array => {
-    jointArray = [...jointArray, ...array]
-  });
-  return [...new Set([...jointArray])]
+export function diffArrays(arr1, arr2) {
+  return arr1.filter(item => {
+    return arr2.indexOf(item) === -1;
+  })
+}
+
+
+export function addPropertyToFeatureCollection(featureCollection){
+  for(const feature of featureCollection.features){
+    feature.properties = {...feature.properties, selected: false}
+  }
+  return featureCollection
 }

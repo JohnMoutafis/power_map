@@ -7,21 +7,16 @@ const INITIAL_STATE = {
 
 
 const selectCountry = function(state, action) {
-  state.selectedCountries.push(action.country);
-  console.log(state.selectedCountries);
-  const selected = state.selectedCountries.slice(0).sort();
-  console.log(selected);
   return {
     ...state,
-    selectCountries: selected
+    selectedCountries: [...state.selectedCountries, action.country].sort()
   }
 };
 
 const deselectCountry = function(state, action) {
-  let currSelected = state.selectedCountries;
   return {
     ...state,
-    selectCountries: currSelected.splice(state.selectedCountries.indexOf(action.country), 1)
+    selectedCountries: state.selectedCountries.filter(country => country !== action.country)
   }
 };
 

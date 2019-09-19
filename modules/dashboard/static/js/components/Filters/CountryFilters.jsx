@@ -7,6 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {diffArrays} from "../../common/utils";
 
 
 const styles = theme => ({
@@ -36,22 +37,17 @@ class CountryFilters extends Component{
   constructor(props){
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      selected: [],
-    };
   }
 
   handleChange(event){
-    console.log('values ' + event.target.value);
-    console.log('state ' + this.state.selected);
-    this.setState({selected: event.target.value});
+    const selectedCountries = this.props.selectedCountries;
+    const newCountries = event.target.value;
+    if(selectedCountries.length < newCountries.length){
+      this.props.countrySelect(diffArrays(newCountries, selectedCountries)[0])
+    } else if (selectedCountries.length > newCountries.length) {
+      this.props.countryDeselect(diffArrays(selectedCountries, newCountries)[0])
+    }
   }
-
-  // componentWillReceiveProps(nextProps, nextContext) {
-  //   if (nextProps.selectedCountries !== this.props.selectedCountries){
-  //     this.setState({selected: nextProps.selectedCountries})
-  //   }
-  // }
 
   render() {
     const {classes} = this.props;
@@ -87,7 +83,7 @@ class CountryFilters extends Component{
 }
 
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedCountries: state.selectedCountries
 });
 
