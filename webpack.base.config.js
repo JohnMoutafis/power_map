@@ -4,7 +4,6 @@ module.exports = {
   module: {
     rules: [
       {test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ['babel-loader']},
-      {test: /\.css$/, loaders: ['style-loader', 'css-loader']},
       {test: /\.(png|jpg)$/, loaders: ['url-loader']}
     ]
   },
