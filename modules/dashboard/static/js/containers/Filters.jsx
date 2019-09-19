@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import EndpointFilters from '../components/Filters/EndpointFilter';
 import CountryFilters from '../components/Filters/CountryFilters';
 import DateRangePicker from '../components/Filters/DatePickerFilters';
@@ -49,7 +50,6 @@ class Filters extends Component{
   constructor(props) {
     super(props);
     this.handleEndpointSelect = this.handleEndpointSelect.bind(this);
-    this.handleCountrySelect = this.handleCountrySelect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDatePickerFromChange = this.handleDatePickerFromChange.bind(this);
     this.handleDatePickerToChange = this.handleDatePickerToChange.bind(this);
@@ -59,7 +59,6 @@ class Filters extends Component{
       hasData: false,
       countryOptions: [],
       selectedEndpoints: [],
-      selectedCountries: [],
       dateFrom: undefined,
       dateTo: undefined,
       timeStart: undefined,
@@ -77,14 +76,6 @@ class Filters extends Component{
 
   handleEndpointSelect(selectedOption) {
     this.setState({selectedEndpoints: selectedOption ? selectedOption : []});
-  }
-
-  handleCountrySelect(selectedOptions) {
-    this.setState({
-      selectedCountries: this.state.countryOptions.filter(country => (
-        selectedOptions.includes(country.label)
-      ))
-    });
   }
 
   handleDatePickerFromChange(from) {
@@ -106,12 +97,15 @@ class Filters extends Component{
   handleSubmit(event) {
     if (!this.state.selectedEndpoints){
       console.log('Empty');
-    } else if (!this.state.selectedCountries || !this.state.selectedCountries.length) {
+    } else if (!this.props.selectedCountries.length) {
        console.log('Empty');
     } else {
+      const countries = this.state.countryOptions.filter(country => (
+        this.props.selectedCountries.includes(country.label)
+      ));
       this.props.handleSubmit(
         this.state.selectedEndpoints,
-        this.state.selectedCountries,
+        countries,
         this.state.dateFrom,
         this.state.dateTo,
         this.state.timeStart,
@@ -123,6 +117,12 @@ class Filters extends Component{
 
   componentDidMount() {
     this.fetchCountries();
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    if(nextProps.selectedCountriesFromMap !== this.props.selectedCountriesFromMap){
+      this.setState({selectedCountriesFromMap: nextProps.selectedCountriesFromMap})
+    }
   }
 
   render() {
@@ -139,10 +139,7 @@ class Filters extends Component{
               endpointOptions={endpointOptions}
               handleChange={this.handleEndpointSelect}
             />
-            <CountryFilters
-              countryOptions={this.state.countryOptions}
-              handleChange={this.handleCountrySelect}
-            />
+            <CountryFilters countryOptions={this.state.countryOptions} />
             <Typography variant='h6' align='center' className={classes.title}>
               Define Date/Time Constraints <span className={classes.span}>(Optional)</span>
             </Typography>
@@ -174,4 +171,8 @@ class Filters extends Component{
   }
 }
 
-export default withStyles(styles)(Filters);
+const mapStateToProps = state => ({
+  selectedCountries: state.selectedCountries
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Filters));

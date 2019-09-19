@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {countryDeselect, countrySelect} from '../../store/actions';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import withStyles from '@material-ui/core/styles/withStyles';
+import {diffArrays} from "../../common/utils";
 
 
 const styles = theme => ({
@@ -34,14 +37,16 @@ class CountryFilters extends Component{
   constructor(props){
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      selected: [],
-    };
   }
 
   handleChange(event){
-    this.setState({selected: event.target.value});
-    this.props.handleChange(event.target.value);
+    const selectedCountries = this.props.selectedCountries;
+    const newCountries = event.target.value;
+    if(selectedCountries.length < newCountries.length){
+      this.props.countrySelect(diffArrays(newCountries, selectedCountries)[0])
+    } else if (selectedCountries.length > newCountries.length) {
+      this.props.countryDeselect(diffArrays(selectedCountries, newCountries)[0])
+    }
   }
 
   render() {
@@ -52,7 +57,7 @@ class CountryFilters extends Component{
           <Select
             multiple
             className={classes.select}
-            value={this.state.selected}
+            value={this.props.selectedCountries}
             onChange={this.handleChange}
             inputProps={{
               id: 'country-pick',
@@ -77,4 +82,17 @@ class CountryFilters extends Component{
   }
 }
 
-export default withStyles(styles)(CountryFilters);
+
+const mapStateToProps = (state) => ({
+  selectedCountries: state.selectedCountries
+});
+
+const mapDispatchToProps = {
+  countrySelect,
+  countryDeselect
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(CountryFilters));

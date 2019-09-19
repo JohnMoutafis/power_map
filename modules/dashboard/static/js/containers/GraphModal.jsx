@@ -47,8 +47,8 @@ class GraphModal extends Component {
         graph = <div>Combination graphs Not Yet Implemented</div>
       } else {
         if (nextProps.renderOption === 'Generation Capacity') {
-          const {categories, series} = createCapacityDataLists(nextProps.displayData[0]);
-          graphOptions = {...simpleGraphOptions(categories, series)};
+          const {ref_year, categories, series} = createCapacityDataLists(nextProps.displayData[0]);
+          graphOptions = {...simpleGraphOptions(ref_year, categories, series)};
         } else if (nextProps.renderOption === 'Actual Generation'){
           const {categories, series} = createGenerationDataLists(nextProps.displayData[0]);
           graphOptions = {...timeseriesGraphOptions('Actual Generation', categories, series)}
@@ -58,8 +58,10 @@ class GraphModal extends Component {
         }
         graph = <GraphComponent graphOptions={graphOptions}/>;
       }
-      this.setState({graph: graph})
-      this.openModal();
+      this.setState(
+        {graph: graph},
+        () => this.openModal()
+      );
     }
   }
 
