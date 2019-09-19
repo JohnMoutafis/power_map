@@ -33,17 +33,24 @@ const productionDataCollectionBlueprint = {
  * @returns {{series: *[], categories: Array}}
  */
 export function createCapacityDataLists(graphData) {
+  console.log(graphData)
+  let ref_year = '';
   let countries = [];
   let capacityDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
-  for(const item of graphData) {
-    countries.push(item.country.name);
-    for(const production of Object.keys(item)) {
-      if(production in capacityDataCollection) {
-        capacityDataCollection[production].data.push(item[production]);
+
+  if(graphData.length){
+    for(const item of graphData) {
+      countries.push(item.country.name);
+      for(const production of Object.keys(item)) {
+        if(production in capacityDataCollection) {
+          capacityDataCollection[production].data.push(item[production]);
+        }
       }
     }
+    ref_year = graphData[0].reference_year;
   }
   return {
+    ref_year: ref_year,
     categories: countries,
     series: Object.keys(capacityDataCollection).map(key => capacityDataCollection[key])
   };
@@ -137,6 +144,16 @@ export function createForecastDataList(graphData) {
     categories: Object.keys(categories).map(key => categories[key]),
     series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key])
   }
+}
+
+
+export default function exportMinMaxDate(categories){
+  if (categories.length){
+    if (categories[0].categories.length) {
+      return '[' + categories[0].categories[0].name + ' - ' + categories[0].categories[categories.length - 1].name + ']'
+    }
+  }
+  return ''
 }
 
 

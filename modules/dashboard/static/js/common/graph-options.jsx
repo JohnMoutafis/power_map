@@ -1,3 +1,5 @@
+import exportMinMaxDate from "./utils";
+
 const productionColors = [
   '#5d4037', '#607d8b', '#9e9e9e', '#212121',
   '#996600', '#000000', '#b2ebf2', '#bcaaa4',
@@ -11,14 +13,14 @@ const forecastColors = [
   '#228B22', '#FF4500'
 ];
 
-export const simpleGraphOptions = function (countries, series) {
+export const simpleGraphOptions = function (ref_year, countries, series) {
   return {
     chart: {
       type: 'column',
       height: '47%',
     },
     title: {
-      text: 'Generation Capacity of ' + countries.join(', ')
+      text: 'Generation Capacity of ' + countries.join(', ') + ' [' + ref_year + ']'
     },
     colors: productionColors,
     xAxis: {
@@ -84,12 +86,12 @@ export const timeseriesGraphOptions = function (title, categories, series) {
       panning: true
     },
     title: {
-      text: title + ' of ' + categories.map(category => (category.name)).join(', ')
+      text: title + ' of ' + categories.map(category => (category.name)).join(', ') + ' ' + exportMinMaxDate(categories)
     },
     colors: graphColors,
     xAxis: {
       min: 0,
-      max: 14,
+      max: 23,
       categories: categories
     },
     yAxis: {
@@ -132,12 +134,18 @@ export const timeseriesGraphOptions = function (title, categories, series) {
     },
     responsive: {
       rules: [{
-        condition: { maxWidth: '500' },
+        condition: { maxWidth: '700' },
         chartOptions: {
           tooltip: { enabled: false },
           legend: { enabled: false }
         }
       }]
+    },
+    exporting: {
+      xAxis: {
+        categories: categories
+      },
+      width: 10000
     },
     series: series
   };
