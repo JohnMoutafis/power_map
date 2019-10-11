@@ -1,6 +1,8 @@
 /**
  * Capacity and Generation Data Series Prototype.
  */
+import moment from 'moment';
+
 const productionDataCollectionBlueprint = {
   'biomass': {name: 'biomass', data: []},
   'fossil_coal_derived_gas': {name: 'fossil_coal_derived_gas', data: []},
@@ -33,7 +35,6 @@ const productionDataCollectionBlueprint = {
  * @returns {{series: *[], categories: Array}}
  */
 export function createCapacityDataLists(graphData) {
-  console.log(graphData)
   let ref_year = '';
   let countries = [];
   let capacityDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
@@ -65,6 +66,9 @@ export function createCapacityDataLists(graphData) {
  */
 export function createGenerationDataLists(graphData) {
   let categories = {};
+  let minDate = '';
+  let maxDate = '';
+  let currDate = '';
   let generationDataCollection = JSON.parse(JSON.stringify(productionDataCollectionBlueprint));
   for(const country of graphData){
     if(!(country.country.name in categories)){
@@ -78,6 +82,13 @@ export function createGenerationDataLists(graphData) {
         name: country.reference_date,
         categories: []
       };
+      currDate = moment(country.reference_date);
+      if (minDate === '' || minDate > currDate) {
+        minDate = currDate
+      }
+      if (maxDate === '' || maxDate < currDate) {
+        maxDate = currDate
+      }
       for(const hourlyGeneration of country.hourly_generation){
         ref_date.categories.push(hourlyGeneration.hour_frame);
         for(const generation of Object.keys(hourlyGeneration)){
@@ -91,7 +102,9 @@ export function createGenerationDataLists(graphData) {
   }
   return {
     categories: Object.keys(categories).map(key => categories[key]),
-    series: Object.keys(generationDataCollection).map(key => generationDataCollection[key])
+    series: Object.keys(generationDataCollection).map(key => generationDataCollection[key]),
+    minDate: minDate.format('DD/MM/YYYY'),
+    maxDate: maxDate.format('DD/MM/YYYY')
   }
 }
 
@@ -105,6 +118,9 @@ export function createGenerationDataLists(graphData) {
  */
 export function createForecastDataList(graphData) {
   let categories = {};
+  let minDate = '';
+  let maxDate = '';
+  let currDate = '';
   let forecastDataCollection = {
     'solar_forecast': {name: 'solar_forecast', data: [], stack: 'wind_solar_forecast'},
     'wind_onshore_forecast': {name: 'wind_onshore__forecast', data: [], stack: 'wind_solar_forecast'},
@@ -124,6 +140,13 @@ export function createForecastDataList(graphData) {
         name: country.reference_date,
         categories: []
       };
+      currDate = moment(country.reference_date);
+      if (minDate === '' || minDate > currDate) {
+        minDate = currDate
+      }
+      if (maxDate === '' || maxDate < currDate) {
+        maxDate = currDate
+      }
       for (const index in country.forecast) {
         ref_date.categories.push(country.forecast[index].hour_frame);
         for(const item of Object.keys(country.forecast[index])){
@@ -142,18 +165,10 @@ export function createForecastDataList(graphData) {
   }
   return {
     categories: Object.keys(categories).map(key => categories[key]),
-    series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key])
+    series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key]),
+    minDate: minDate.format('DD/MM/YYYY'),
+    maxDate: maxDate.format('DD/MM/YYYY')
   }
-}
-
-
-export default function exportMinMaxDate(categories){
-  if (categories.length){
-    if (categories[0].categories.length) {
-      return '[' + categories[0].categories[0].name + ' - ' + categories[0].categories[categories.length - 1].name + ']'
-    }
-  }
-  return ''
 }
 
 

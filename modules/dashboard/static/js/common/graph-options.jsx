@@ -1,4 +1,3 @@
-import exportMinMaxDate from "./utils";
 
 const productionColors = [
   '#5d4037', '#607d8b', '#9e9e9e', '#212121',
@@ -76,7 +75,7 @@ export const simpleGraphOptions = function (ref_year, countries, series) {
 };
 
 
-export const timeseriesGraphOptions = function (title, categories, series) {
+export const timeseriesGraphOptions = function (title, categories, series, minDate, maxDate) {
   let graphColors = productionColors;
   if(title.toLowerCase().includes('forecast')){graphColors = forecastColors}
   return {
@@ -86,7 +85,9 @@ export const timeseriesGraphOptions = function (title, categories, series) {
       panning: true
     },
     title: {
-      text: title + ' of ' + categories.map(category => (category.name)).join(', ') + ' ' + exportMinMaxDate(categories)
+      text: title + ' of ' + categories.map(
+        category => (category.name)
+      ).join(', ') + ' [' + minDate + ' - ' + maxDate + ']'
     },
     colors: graphColors,
     xAxis: {

@@ -50,11 +50,11 @@ class GraphModal extends Component {
           const {ref_year, categories, series} = createCapacityDataLists(nextProps.displayData[0]);
           graphOptions = {...simpleGraphOptions(ref_year, categories, series)};
         } else if (nextProps.renderOption === 'Actual Generation'){
-          const {categories, series} = createGenerationDataLists(nextProps.displayData[0]);
-          graphOptions = {...timeseriesGraphOptions('Actual Generation', categories, series)}
+          const {categories, series, minDate, maxDate} = createGenerationDataLists(nextProps.displayData[0]);
+          graphOptions = {...timeseriesGraphOptions('Actual Generation', categories, series, minDate, maxDate)}
         } else if (nextProps.renderOption === 'Generation Forecast'){
-          const {categories, series} = createForecastDataList(nextProps.displayData[0]);
-          graphOptions = {...timeseriesGraphOptions('Generation Forecast', categories, series)}
+          const {categories, series, minDate, maxDate} = createForecastDataList(nextProps.displayData[0]);
+          graphOptions = {...timeseriesGraphOptions('Generation Forecast', categories, series, minDate, maxDate)}
         }
         graph = <GraphComponent graphOptions={graphOptions}/>;
       }
