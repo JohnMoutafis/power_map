@@ -103,8 +103,8 @@ export function createGenerationDataLists(graphData) {
   return {
     categories: Object.keys(categories).map(key => categories[key]),
     series: Object.keys(generationDataCollection).map(key => generationDataCollection[key]),
-    minDate: minDate.format('DD/MM/YYYY'),
-    maxDate: maxDate.format('DD/MM/YYYY')
+    minDate: moment(minDate).format('DD/MM/YYYY'),
+    maxDate: moment(maxDate).format('DD/MM/YYYY')
   }
 }
 
@@ -166,8 +166,8 @@ export function createForecastDataList(graphData) {
   return {
     categories: Object.keys(categories).map(key => categories[key]),
     series: Object.keys(forecastDataCollection).map(key => forecastDataCollection[key]),
-    minDate: minDate.format('DD/MM/YYYY'),
-    maxDate: maxDate.format('DD/MM/YYYY')
+    minDate: moment(minDate).format('DD/MM/YYYY'),
+    maxDate: moment(maxDate).format('DD/MM/YYYY')
   }
 }
 
